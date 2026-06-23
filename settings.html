@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>VELORA - Definições</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Inter', sans-serif; background: #000; color: #fff; min-height: 100dvh; }
+header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #000; border-bottom: 1px solid #0d000d; position: sticky; top: 0; z-index: 10; }
+main { padding: 16px 18px 80px; max-width: 480px; margin: 0 auto; }
+.sec-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #555; text-transform: uppercase; margin: 24px 0 6px; }
+.sec-div { height: 1px; background: linear-gradient(to right, #d414bd 0%, #1a001a 60%); margin-bottom: 4px; }
+.item { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #0a000a; cursor: pointer; transition: opacity .15s; }
+.item:active { opacity: 0.7; }
+.item:last-child { border-bottom: none; }
+.item-l { display: flex; align-items: center; gap: 14px; }
+.ic { width: 36px; height: 36px; border-radius: 10px; background: #080008; display: flex; align-items: center; justify-content: center; font-size: 15px; color: #888; flex-shrink: 0; }
+.lbl { font-size: 15px; font-weight: 500; }
+.sub { font-size: 12px; color: #555; margin-top: 2px; }
+.val { font-size: 13px; color: #555; display: flex; align-items: center; gap: 5px; }
+.chevron { color: #d414bd; font-size: 11px; }
+/* Toggle */
+.tog { width: 46px; height: 26px; background: #222; border-radius: 13px; position: relative; cursor: pointer; transition: background .25s; flex-shrink: 0; border: none; }
+.tog.on { background: #d414bd; box-shadow: 0 0 10px rgba(212,20,189,0.3); }
+.tog::after { content:''; position:absolute; width:20px; height:20px; border-radius:50%; background:#fff; top:3px; left:3px; transition:transform .25s; box-shadow:0 1px 4px rgba(0,0,0,0.4); }
+.tog.on::after { transform:translateX(20px); }
+/* Avatar */
+.av { width: 42px; height: 42px; border-radius: 50%; background: #0d000d; border: 2px solid #d414bd; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #f472b6; flex-shrink: 0; overflow: hidden; }
+/* Danger */
+.danger { color: #ef4444; }
+.danger .ic { color: #ef4444; }
+/* Modal */
+.modal-bg { position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s; }
+.modal-bg.open { opacity:1;pointer-events:all; }
+.modal { background:#080008;border-radius:24px 24px 0 0;border-top:1px solid #1a001a;width:100%;max-width:480px;padding:20px 20px 40px;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);max-height:80vh;overflow-y:auto; }
+.modal-bg.open .modal { transform:translateY(0); }
+.modal-handle { width:40px;height:4px;background:#333;border-radius:2px;margin:0 auto 16px; }
+.modal-title { font-size:18px;font-weight:700;margin-bottom:16px; }
+.opt { display:flex;align-items:center;justify-content:space-between;padding:14px;background:#0a000a;border:1px solid #1a001a;border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all .15s; }
+.opt:hover { border-color:#d414bd; }
+.opt.selected { border-color:#d414bd;background:rgba(212,20,189,0.08); }
+/* Toast */
+#toast { position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#0a000a;border:1px solid #d414bd;border-radius:12px;padding:10px 20px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap; }
+#toast.show { opacity:1; }
+#toast.s { border-color:#22c55e; }
+#toast.e { border-color:#ef4444; }
+/* Spinner */
+.spinner { width:20px;height:20px;border:2px solid rgba(212,20,189,.2);border-top-color:#d414bd;border-radius:50%;animation:spin .7s linear infinite;display:inline-block; }
+@keyframes spin { to { transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header>
+  <button onclick="window.location.href='chat.html'" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer;"><i class="fa-solid fa-arrow-left"></i></button>
+  <h1 style="font-size:20px;font-weight:900;letter-spacing:3px;">DEFINIÇÕES</h1>
+  <div style="width:28px;"></div>
+</header>
+
+<main>
+  <!-- CONTA -->
+  <div class="sec-title">CONTA</div>
+  <div class="sec-div"></div>
+
+  <div class="item" onclick="editarNome()">
+    <div class="item-l">
+      <div class="av" id="s-av">A</div>
+      <div>
+        <div class="lbl" id="s-nome">Utilizador</div>
+        <div class="sub">Toca para editar o nome</div>
+      </div>
+    </div>
+    <div class="val"><i class="fa-solid fa-pen" style="font-size:13px;"></i></div>
+  </div>
+
+  <div class="item" onclick="alterarEmail()">
+    <div class="item-l">
+      <div class="ic"><i class="fa-regular fa-envelope"></i></div>
+      <div>
+        <div class="lbl">E-mail</div>
+        <div class="sub" id="s-email">...</div>
+      </div>
+    </div>
+    <div class="val">Alterar <i class="fa-solid fa-chevron-right chevron"></i></div>
+  </div>
+
+  <div class="item" onclick="alterarPassword()">
+    <div class="item-l">
+      <div class="ic"><i class="fa-solid fa-key"></i></div>
+      <div>
+        <div class="lbl">Palavra-passe</div>
+        <div class="sub">Alterar palavra-passe</div>
+      </div>
+    </div>
+    <div class="val"><i class="fa-solid fa-chevron-right chevron"></i></div>
+  </div>
+
+  <div class="item" onclick="window.location.href='plus.html'">
+    <div class="item-l">
+      <div class="ic"><i class="fa-regular fa-credit-card"></i></div>
+      <div>
+        <div class="lbl">Plano actual</div>
+        <div class="sub" id="s-plano">Grátis</div>
+      </div>
+    </div>
+    <div class="val" style="color:#d414bd;font-weight:600;">Upgrade <i class="fa-solid fa-chevron-right chevron"></i></div>
+  </div>
+
+  <!-- APARÊNCIA -->
+  <div class="sec-title">APARÊNCIA</div>
+  <div class="sec-div"></div>
+
+  <div class="item">
+    <div class="item-l">
+      <div class="ic"><i class="fa-solid fa-moon"></i></div>
+      <div class="lbl">Modo Escuro</div>
+    </div>
+    <button class="tog on" id="tog-dark" onclick="this.classList.toggle('on')"></button>
+  </div>
+
+  <div class="item" onclick="abrirModalIdioma()">
+    <div class="item-l">
+      <div class="ic"><i class="fa-solid fa-globe"></i></div>
+      <div class="lbl">Idioma</div>
+    </div>
+    <div class="val" id="val-idioma">Português <i class="fa-solid fa-chevron-right chevron"></i></div>
+  </div>
+
+  <div class="item" onclick="abrirModalFonte()">
+    <div class="item-l">
+      <div class="ic" style="font-size:13px;font-weight:700;">Aa</div>
+      <div class="lbl">Tamanho da fonte</div>
+    </div>
+    <div class="val" id="val-fonte">Normal <i class="fa-solid fa-chevron-right chevron"></i></div>
+  </div>
+
+  <!-- IA & CHAT -->
+  <div class="sec-title">IA & CHAT</div>
+  <div class="sec-div"></div>
+
+  <div class="item" onclick="abrirModalModelo()">
+    <div class="item-l">
+      <div class="ic"><i class="fa-solid fa-robot"></i></div>
+      <div class="lbl">Modelo de IA</div>
+    </div>
+    <div class="val" id="val-modelo">Gemini Flash <i class="fa-solid fa-chevron-right chevron"></i></div>
+  </div>
+
+  <div class="item">
+    <div class="item-l">
+      <div class="ic"><i class="fa-regular fa-message"></i></div>
+      <div class="lbl">Guardar histórico</div>
+    </div>
+    <button class="tog on" id="tog-hist" onclick="this.classList.toggle('on')"></button>
+  </div>
+
+  <div class="item" onclick="limparHistorico()">
+    <div class="item-l">
+      <div class="ic"><i class="fa-solid fa-trash-can"></i></div>
+      <div>
+        <div class="lbl">Limpar histórico</div>
+        <div class="sub">Apaga todas as conversas guardadas</div>
+      </div>
+    </div>
+    <span style="background:#1a0000;border:1px solid rgba(239,68,68,.25);border-radius:8px;padding:5px 12px;font-size:12px;color:#f87171;cursor:pointer;">Limpar</span>
+  </div>
+
+  <div class="item" onclick="exportarHistorico()">
+    <div class="item-l">
+      <div class="ic"><i class="fa-solid fa-file-export"></i></div>
+      <div class="lbl">Exportar conversas</div>
+    </div>
+    <div class="val"><i class="fa-solid fa-chevron-right chevron"></i></div>
+  </div>
+
+  <!-- NOTIFICAÇÕES -->
+  <div class="sec-title">NOTIFICAÇÕES</div>
+  <div class="sec-div"></div>
+
+  <div class="item">
+    <div class="item-l">
+      <div class="ic"><i class="fa-solid fa-bell"></i></div>
+      <div class="lbl">Push notifications</div>
+    </div>
+    <button class="tog on" id="tog-notif" onclick="toggleNotif(this)"></button>
+  </div>
+
+  <div class="item">
+    <div class="item-l">
+      <div class="ic"><i class="fa-solid fa-volume-high"></i></div>
+      <div class="lbl">Sons</div>
+    </div>
+    <button class="tog on" onclick="this.classList.toggle('on')"></button>
+  </div>
+
+  <!-- PRIVACIDADE -->
+  <div class="sec-title">PRIVACIDADE</div>
+  <div class="sec-div"></div>
+
+  <div class="item" onclick="abrirPrivacidade()">
+    <div class="item-l">
+      <div class="ic"><i class="fa-solid fa-shield-halved"></i></div>
+      <div class="lbl">Dados & Privacidade</div>
+    </div>
+    <div class="val"><i class="fa-solid fa-chevron-right chevron"></i></div>
+  </div>
+
+  <div class="item" onclick="abrirPolitica()">
+    <div class="item-l">
+      <div class="ic"><i class="fa-solid fa-file-shield"></i></div>
+      <div class="lbl">Política de uso</div>
+    </div>
+    <div class="val"><i class="fa-solid fa-chevron-right chevron"></i></div>
+  </div>
+
+  <div class="item danger" onclick="confirmarEliminar()">
+    <div class="item-l">
+      <div class="ic danger"><i class="fa-solid fa-user-xmark"></i></div>
+      <div>
+        <div class="lbl danger">Eliminar conta</div>
+        <div class="sub" style="color:#7f1d1d;">Esta acção é irreversível</div>
+      </div>
+    </div>
+    <i class="fa-solid fa-trash-can" style="color:#ef4444;font-size:15px;"></i>
+  </div>
+
+  <!-- SOBRE -->
+  <div class="sec-title">SOBRE</div>
+  <div class="sec-div"></div>
+
+  <div class="item">
+    <div class="item-l">
+      <div class="ic"><i class="fa-solid fa-circle-info"></i></div>
+      <div class="lbl">Versão</div>
+    </div>
+    <div class="val">v1.0.0</div>
+  </div>
+
+  <div class="item" onclick="window.open('mailto:suporte@velora.ai')">
+    <div class="item-l">
+      <div class="ic"><i class="fa-regular fa-envelope"></i></div>
+      <div class="lbl">Contactar suporte</div>
+    </div>
+    <div class="val"><i class="fa-solid fa-chevron-right chevron"></i></div>
+  </div>
+
+</main>
+
+<!-- MODAL IDIOMA -->
+<div class="modal-bg" id="modal-idioma">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🌐 Seleccionar Idioma</div>
+    <div class="opt selected" onclick="selectIdioma('Português (PT)', this)"><span>🇵🇹 Português (Portugal)</span><i class="fa-solid fa-check" style="color:#d414bd;"></i></div>
+    <div class="opt" onclick="selectIdioma('Português (BR)', this)"><span>🇧🇷 Português (Brasil)</span><span></span></div>
+    <div class="opt" onclick="selectIdioma('English', this)"><span>🇬🇧 English</span><span></span></div>
+    <div class="opt" onclick="selectIdioma('Español', this)"><span>🇪🇸 Español</span><span></span></div>
+    <button onclick="fecharModal('modal-idioma')" style="width:100%;margin-top:12px;padding:13px;background:transparent;border:1px solid #1a001a;border-radius:12px;color:#888;font-size:14px;cursor:pointer;">Fechar</button>
+  </div>
+</div>
+
+<!-- MODAL FONTE -->
+<div class="modal-bg" id="modal-fonte">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Aa Tamanho da fonte</div>
+    <div class="opt" onclick="selectFonte('Pequena', 13, this)"><span style="font-size:13px;">Pequena</span><span></span></div>
+    <div class="opt selected" onclick="selectFonte('Normal', 15, this)"><span style="font-size:15px;">Normal</span><i class="fa-solid fa-check" style="color:#d414bd;"></i></div>
+    <div class="opt" onclick="selectFonte('Grande', 17, this)"><span style="font-size:17px;">Grande</span><span></span></div>
+    <div class="opt" onclick="selectFonte('Muito Grande', 19, this)"><span style="font-size:19px;">Muito Grande</span><span></span></div>
+    <button onclick="fecharModal('modal-fonte')" style="width:100%;margin-top:12px;padding:13px;background:transparent;border:1px solid #1a001a;border-radius:12px;color:#888;font-size:14px;cursor:pointer;">Fechar</button>
+  </div>
+</div>
+
+<!-- MODAL MODELO IA -->
+<div class="modal-bg" id="modal-modelo">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🤖 Modelo de IA</div>
+    <div class="opt selected" onclick="selectModelo('Gemini Flash', this)">
+      <div><div style="font-weight:600;">Gemini Flash</div><div style="font-size:12px;color:#555;">Rápido e eficiente · Grátis</div></div>
+      <i class="fa-solid fa-check" style="color:#d414bd;"></i>
+    </div>
+    <div class="opt" onclick="selectModelo('Gemini Pro', this)">
+      <div><div style="font-weight:600;">Gemini Pro 👑</div><div style="font-size:12px;color:#555;">Mais avançado · Plus</div></div>
+      <span></span>
+    </div>
+    <button onclick="fecharModal('modal-modelo')" style="width:100%;margin-top:12px;padding:13px;background:transparent;border:1px solid #1a001a;border-radius:12px;color:#888;font-size:14px;cursor:pointer;">Fechar</button>
+  </div>
+</div>
+
+<!-- MODAL ELIMINAR -->
+<div class="modal-bg" id="modal-eliminar">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title danger">⚠️ Eliminar conta?</div>
+    <p style="color:#888;font-size:14px;margin-bottom:20px;line-height:1.6;">Esta acção é <strong>irreversível</strong>. Todos os teus dados, histórico e favoritos serão apagados permanentemente.</p>
+    <div style="display:flex;gap:10px;">
+      <button onclick="fecharModal('modal-eliminar')" style="flex:1;padding:14px;background:transparent;border:1px solid #1a001a;border-radius:12px;color:#888;font-size:14px;cursor:pointer;">Cancelar</button>
+      <button onclick="eliminarConta()" style="flex:1;padding:14px;background:linear-gradient(135deg,#dc2626,#991b1b);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PRIVACIDADE -->
+<div class="modal-bg" id="modal-privacidade">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🔒 Dados & Privacidade</div>
+    <div style="color:#888;font-size:14px;line-height:1.7;">
+      <p style="margin-bottom:12px;">A VELORA IA respeita a tua privacidade.</p>
+      <p style="margin-bottom:8px;">• As conversas são guardadas <strong>localmente</strong> no teu dispositivo</p>
+      <p style="margin-bottom:8px;">• Os teus dados de login são geridos pelo <strong>Firebase/Google</strong></p>
+      <p style="margin-bottom:8px;">• Não partilhamos dados com terceiros</p>
+      <p>• Podes apagar os teus dados a qualquer momento</p>
+    </div>
+    <button onclick="fecharModal('modal-privacidade')" style="width:100%;margin-top:16px;padding:13px;background:transparent;border:1px solid #1a001a;border-radius:12px;color:#888;font-size:14px;cursor:pointer;">Fechar</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut, deleteUser, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const app  = initializeApp({
+  apiKey: "AIzaSyAW2ISQ2TKR2p0-QF_v0aADiD-ttDpGm3c",
+  authDomain: "velora-ia-e2539.firebaseapp.com",
+  projectId: "velora-ia-e2539",
+  storageBucket: "velora-ia-e2539.firebasestorage.app",
+  messagingSenderId: "876348453170",
+  appId: "1:876348453170:web:bcca8ebde23563e26a412b"
+});
+const auth = getAuth(app);
+let user = null;
+
+onAuthStateChanged(auth, u => {
+  if (!u) { window.location.href = 'index.html'; return; }
+  user = u;
+  const nome = u.displayName || u.email.split('@')[0];
+  const av = document.getElementById('s-av');
+  if (u.photoURL) av.innerHTML = `<img src="${u.photoURL}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+  else av.textContent = nome[0].toUpperCase();
+  document.getElementById('s-nome').textContent = nome;
+  document.getElementById('s-email').textContent = u.email;
+  const plano = localStorage.getItem('vp_' + u.uid) || 'Grátis';
+  document.getElementById('s-plano').textContent = plano;
+});
+
+function toast(msg, tipo='i', dur=3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `show ${tipo}`;
+  setTimeout(() => t.className='', dur);
+}
+
+window.abrirModal = id => document.getElementById(id).classList.add('open');
+window.fecharModal = id => document.getElementById(id).classList.remove('open');
+
+document.querySelectorAll('.modal-bg').forEach(bg => {
+  bg.addEventListener('click', e => { if(e.target===bg) bg.classList.remove('open'); });
+});
+
+window.abrirModalIdioma = () => abrirModal('modal-idioma');
+window.abrirModalFonte  = () => abrirModal('modal-fonte');
+window.abrirModalModelo = () => abrirModal('modal-modelo');
+window.abrirPrivacidade = () => abrirModal('modal-privacidade');
+window.abrirPolitica    = () => abrirModal('modal-privacidade');
+window.confirmarEliminar= () => abrirModal('modal-eliminar');
+
+window.selectIdioma = (val, el) => {
+  document.querySelectorAll('#modal-idioma .opt').forEach(o => { o.classList.remove('selected'); o.innerHTML = o.innerHTML.replace('<i class="fa-solid fa-check" style="color:#d414bd;"></i>','<span></span>'); });
+  el.classList.add('selected');
+  document.getElementById('val-idioma').innerHTML = `${val} <i class="fa-solid fa-chevron-right chevron"></i>`;
+  fecharModal('modal-idioma');
+  toast('Idioma actualizado ✓', 's');
+};
+
+window.selectFonte = (nome, tam, el) => {
+  document.querySelectorAll('#modal-fonte .opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.body.style.fontSize = tam + 'px';
+  document.getElementById('val-fonte').innerHTML = `${nome} <i class="fa-solid fa-chevron-right chevron"></i>`;
+  localStorage.setItem('v_fonte', tam);
+  fecharModal('modal-fonte');
+  toast('Fonte actualizada ✓', 's');
+};
+
+window.selectModelo = (nome, el) => {
+  document.querySelectorAll('#modal-modelo .opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('val-modelo').innerHTML = `${nome} <i class="fa-solid fa-chevron-right chevron"></i>`;
+  fecharModal('modal-modelo');
+  toast('Modelo actualizado ✓', 's');
+};
+
+window.editarNome = async () => {
+  const nome = prompt('Novo nome:', document.getElementById('s-nome').textContent);
+  if (!nome?.trim()) return;
+  try {
+    await updateProfile(user, { displayName: nome.trim() });
+    document.getElementById('s-nome').textContent = nome.trim();
+    document.getElementById('s-av').textContent = nome.trim()[0].toUpperCase();
+    toast('Nome actualizado ✓', 's');
+  } catch(e) { toast('Erro: ' + e.message, 'e'); }
+};
+
+window.alterarEmail = () => toast('Para alterar o e-mail, sai e volta a registar com o novo e-mail', 'i', 4000);
+
+window.alterarPassword = async () => {
+  if (!user) return;
+  try {
+    await sendPasswordResetEmail(auth, user.email);
+    toast('E-mail de recuperação enviado! Verifica a tua caixa ✓', 's', 4000);
+  } catch(e) { toast('Erro: ' + e.message, 'e'); }
+};
+
+window.limparHistorico = () => {
+  if (!user) return;
+  if (!confirm('Apagar todo o histórico de conversas?')) return;
+  localStorage.removeItem('vh_' + user.uid);
+  toast('Histórico apagado ✓', 's');
+};
+
+window.exportarHistorico = () => {
+  if (!user) return;
+  const h = JSON.parse(localStorage.getItem('vh_' + user.uid) || '[]');
+  if (!h.length) { toast('Sem histórico para exportar', 'i'); return; }
+  const txt = h.map(m => `[${m.role === 'user' ? 'TU' : 'VELORA'}]\n${m.content}`).join('\n\n---\n\n');
+  const blob = new Blob([txt], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'velora-conversa.txt';
+  a.click();
+  toast('Exportado com sucesso ✓', 's');
+};
+
+window.toggleNotif = (btn) => {
+  btn.classList.toggle('on');
+  if (btn.classList.contains('on') && 'Notification' in window) {
+    Notification.requestPermission().then(p => {
+      if (p === 'granted') toast('Notificações activadas ✓', 's');
+      else { btn.classList.remove('on'); toast('Permissão negada', 'e'); }
+    });
+  }
+};
+
+window.eliminarConta = async () => {
+  if (!user) return;
+  try {
+    localStorage.clear();
+    await deleteUser(user);
+    window.location.href = 'index.html';
+  } catch(e) {
+    fecharModal('modal-eliminar');
+    if (e.code === 'auth/requires-recent-login') {
+      toast('Precisas de fazer login novamente para eliminar a conta', 'e', 5000);
+      setTimeout(() => { signOut(auth); window.location.href='index.html'; }, 2000);
+    } else { toast('Erro: ' + e.message, 'e'); }
+  }
+};
+</script>
+</body>
+</html>
