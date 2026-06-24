@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>VELORA — Legendas</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<script src="velora.js"></script>
+<style>
+:root { --bg:#000; --bg2:#080008; --bg3:#0d000d; --border:#1a001a; --accent:#d414bd; --accent2:#9b12d4; --text:#fff; --text2:#bbb; --text3:#555; --fs:16px; }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body.light { --bg:#f8f8f8; --bg2:#fff; --bg3:#f0f0f0; --border:#e0e0e0; --text:#111; --text2:#555; --text3:#999; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100dvh; display:flex; flex-direction:column; font-size:var(--fs); }
+header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; background:var(--bg); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:10; }
+body.light header { background:var(--bg2); }
+.h-title { font-size:16px; font-weight:700; letter-spacing:3px; }
+.btn-back { background:none; border:none; color:var(--text); font-size:20px; cursor:pointer; padding:4px; }
+.btn-plus { border:1.5px solid var(--accent); color:var(--accent); background:transparent; padding:6px 14px; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; }
+main { flex:1; padding:20px 18px 80px; max-width:480px; width:100%; margin:0 auto; }
+.section-title { font-size:11px; font-weight:700; color:var(--text3); letter-spacing:2px; text-transform:uppercase; margin-bottom:10px; }
+
+/* Tipos SEM emoji, letras maiores */
+.tipos { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+.tipo-btn { padding:9px 18px; background:var(--bg2); border:1.5px solid var(--border); border-radius:20px; color:var(--text2); font-size:15px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:all .15s; letter-spacing:0.3px; }
+.tipo-btn:hover { border-color:var(--accent); color:var(--accent); }
+.tipo-btn.active { border-color:var(--accent); background:rgba(212,20,189,0.08); color:var(--accent); }
+
+/* Input */
+textarea.topic { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:16px; padding:14px 16px; color:var(--text); font-size:var(--fs); font-family:'Inter',sans-serif; outline:none; resize:none; min-height:80px; line-height:1.6; transition:border-color .2s; margin-bottom:16px; }
+body.light textarea.topic { background:#fff; }
+textarea.topic:focus { border-color:var(--accent); }
+textarea.topic::placeholder { color:var(--text3); }
+
+/* Tom */
+.tom-wrap { display:flex; gap:8px; margin-bottom:20px; }
+.tom-btn { flex:1; padding:10px; background:var(--bg2); border:1.5px solid var(--border); border-radius:12px; color:var(--text2); font-size:14px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:all .15s; text-align:center; }
+.tom-btn.active { border-color:var(--accent); background:rgba(212,20,189,0.08); color:var(--accent); }
+
+/* Botão gerar */
+.btn-gen { width:100%; padding:16px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; border-radius:14px; color:#fff; font-size:16px; font-weight:700; font-family:'Inter',sans-serif; cursor:pointer; transition:all .2s; display:flex; align-items:center; justify-content:center; gap:10px; }
+.btn-gen:hover { transform:translateY(-1px); box-shadow:0 8px 24px rgba(212,20,189,0.35); }
+.btn-gen:disabled { opacity:0.5; cursor:not-allowed; transform:none; box-shadow:none; }
+
+/* Resultados */
+.results { margin-top:20px; display:flex; flex-direction:column; gap:14px; }
+.result-card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:16px; }
+.result-num { font-size:10px; font-weight:700; letter-spacing:2px; color:var(--accent); text-transform:uppercase; margin-bottom:8px; }
+.result-text { font-size:var(--fs); line-height:1.7; color:var(--text); white-space:pre-wrap; }
+.result-actions { display:flex; gap:8px; margin-top:12px; }
+.result-btn { padding:8px 16px; background:transparent; border:1px solid var(--border); border-radius:10px; color:var(--text3); font-size:13px; font-weight:600; cursor:pointer; font-family:'Inter',sans-serif; transition:all .15s; }
+.result-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+/* Loading */
+.loading-card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; padding:16px; display:flex; align-items:center; gap:12px; animation:pulse 1.5s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:0.8} }
+
+#toast { position:fixed; top:70px; left:50%; transform:translateX(-50%); background:var(--bg2); border:1px solid var(--accent); border-radius:12px; padding:10px 20px; font-size:13px; z-index:999; opacity:0; transition:opacity .3s; pointer-events:none; white-space:nowrap; max-width:90vw; }
+#toast.show { opacity:1; }
+#toast.s { border-color:#22c55e; }
+.spinner { width:20px; height:20px; border:2px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header>
+  <button class="btn-back" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i></button>
+  <div class="h-title" id="page-title">LEGENDAS</div>
+  <button class="btn-plus" onclick="location.href='plus.html'">Plus</button>
+</header>
+
+<main>
+  <!-- Tipos SEM emoji -->
+  <div class="section-title" data-t="type_label">TIPO DE CONTEÚDO</div>
+  <div class="tipos">
+    <button class="tipo-btn active" data-tipo="motivacional" onclick="pickTipo(this)" data-t="leg_motivacional">Motivacional</button>
+    <button class="tipo-btn" data-tipo="poesia" onclick="pickTipo(this)" data-t="leg_poesia">Poesia</button>
+    <button class="tipo-btn" data-tipo="instagram" onclick="pickTipo(this)" data-t="leg_instagram">Instagram</button>
+    <button class="tipo-btn" data-tipo="tiktok" onclick="pickTipo(this)" data-t="leg_tiktok">TikTok Hook</button>
+    <button class="tipo-btn" data-tipo="linkedin" onclick="pickTipo(this)" data-t="leg_linkedin">LinkedIn</button>
+    <button class="tipo-btn" data-tipo="humor" onclick="pickTipo(this)" data-t="leg_humor">Humor</button>
+  </div>
+
+  <!-- Tópico -->
+  <div class="section-title" data-t="topic_label">TÓPICO</div>
+  <textarea class="topic" id="topic-inp" rows="2" data-t-ph="topic_ph" placeholder="Sobre o que é o conteúdo? Ex: sucesso, amor, viagem..."></textarea>
+
+  <!-- Tom -->
+  <div class="section-title" data-t="tone_label">TOM</div>
+  <div class="tom-wrap">
+    <button class="tom-btn active" data-tom="inspirador" onclick="pickTom(this)" data-t="tone_inspiring">Inspirador</button>
+    <button class="tom-btn" data-tom="directo" onclick="pickTom(this)" data-t="tone_direct">Directo</button>
+    <button class="tom-btn" data-tom="emotivo" onclick="pickTom(this)" data-t="tone_emotional">Emotivo</button>
+  </div>
+
+  <!-- Botão -->
+  <button class="btn-gen" id="btn-gen" onclick="gerarLegendas()">
+    <span data-t="generate_legends">GERAR LEGENDAS</span>
+  </button>
+
+  <!-- Resultados -->
+  <div class="results" id="results"></div>
+</main>
+
+<div id="toast"></div>
+
+<script>
+const GROQ_KEY = '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';
+let tipo = 'motivacional';
+let tom = 'inspirador';
+
+function aplicarTrad() {
+  if (typeof aplicarIdioma === 'function') aplicarIdioma();
+  document.querySelectorAll('[data-t-ph]').forEach(el => {
+    if (typeof t === 'function') el.placeholder = t(el.getAttribute('data-t-ph'));
+  });
+  if (typeof t === 'function') {
+    document.getElementById('page-title').textContent = t('legend_title');
+    document.title = 'VELORA — ' + t('legend_title');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => setTimeout(aplicarTrad, 100));
+
+window.pickTipo = (btn) => {
+  document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  tipo = btn.dataset.tipo;
+};
+
+window.pickTom = (btn) => {
+  document.querySelectorAll('.tom-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  tom = btn.dataset.tom;
+};
+
+const PROMPTS = {
+  motivacional: (topic, tom, lang) => `Cria 3 frases motivacionais ${tom === 'inspirador' ? 'inspiradoras e poderosas' : tom === 'directo' ? 'directas e impactantes' : 'emotivas e profundas'} sobre "${topic}". ${lang === 'en' ? 'In English.' : lang === 'es' ? 'En español.' : 'Em português.'} Cada frase numa linha separada. Sem numeração. Sem emojis. Apenas as frases.`,
+  poesia: (topic, tom, lang) => `Cria um poema curto (4-6 versos) ${tom} sobre "${topic}". ${lang === 'en' ? 'In English.' : lang === 'es' ? 'En español.' : 'Em português.'} Elegante e emotivo. Sem emojis.`,
+  instagram: (topic, tom, lang) => `Cria 3 legendas perfeitas para Instagram sobre "${topic}". Tom ${tom}. ${lang === 'en' ? 'In English.' : lang === 'es' ? 'En español.' : 'Em português.'} Inclui hashtags relevantes no final. Cada legenda separada por linha em branco.`,
+  tiktok: (topic, tom, lang) => `Cria 3 hooks virais para TikTok sobre "${topic}". Tom ${tom}. ${lang === 'en' ? 'In English.' : lang === 'es' ? 'En español.' : 'Em português.'} Primeiras frases que param o scroll. Directas e impactantes. Cada uma separada por linha em branco.`,
+  linkedin: (topic, tom, lang) => `Cria 3 textos profissionais para LinkedIn sobre "${topic}". Tom ${tom}. ${lang === 'en' ? 'In English.' : lang === 'es' ? 'En español.' : 'Em português.'} Formal mas envolvente. Cada um separado por linha em branco.`,
+  humor: (topic, tom, lang) => `Cria 3 legendas humorísticas sobre "${topic}" para Instagram/TikTok. ${lang === 'en' ? 'In English.' : lang === 'es' ? 'En español.' : 'Em português.'} Criativas e engraçadas. Cada uma separada por linha em branco.`,
+};
+
+window.gerarLegendas = async () => {
+  const topic = document.getElementById('topic-inp').value.trim();
+  if (!topic) { toast('Escreve o tópico primeiro', 'e'); return; }
+
+  const btn = document.getElementById('btn-gen');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div>';
+
+  const results = document.getElementById('results');
+  results.innerHTML = Array(3).fill('<div class="loading-card"><div class="spinner"></div><span>A gerar...</span></div>').join('');
+
+  const lang = typeof getLang === 'function' ? getLang() : 'pt';
+  const prompt = PROMPTS[tipo] ? PROMPTS[tipo](topic, tom, lang) : PROMPTS.motivacional(topic, tom, lang);
+
+  try {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${GROQ_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'llama-3.1-8b-instant',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 800,
+        temperature: 0.9
+      })
+    });
+    const data = await res.json();
+    const texto = data.choices?.[0]?.message?.content || '';
+    const partes = texto.split(/\n\n+/).filter(p => p.trim().length > 10);
+
+    if (!partes.length) {
+      results.innerHTML = `<div class="result-card"><div class="result-text">${texto}</div></div>`;
+    } else {
+      results.innerHTML = partes.map((p, i) => `
+        <div class="result-card">
+          <div class="result-num">${lang === 'en' ? 'OPTION' : lang === 'es' ? 'OPCIÓN' : 'OPÇÃO'} ${i + 1}</div>
+          <div class="result-text">${p.trim()}</div>
+          <div class="result-actions">
+            <button class="result-btn" onclick="copiar(this, \`${encodeURIComponent(p.trim())}\`)"><i class="fa-regular fa-copy"></i> ${lang === 'en' ? 'Copy' : lang === 'es' ? 'Copiar' : 'Copiar'}</button>
+            <button class="result-btn" onclick="partilhar(\`${encodeURIComponent(p.trim())}\`)"><i class="fa-solid fa-share-nodes"></i> ${lang === 'en' ? 'Share' : lang === 'es' ? 'Compartir' : 'Partilhar'}</button>
+          </div>
+        </div>`).join('');
+    }
+  } catch(e) {
+    results.innerHTML = `<div class="result-card"><div class="result-text">Erro de conexão. Tenta novamente.</div></div>`;
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<span data-t="generate_legends">' + (typeof t === 'function' ? t('generate_legends') : 'GERAR LEGENDAS') + '</span>';
+};
+
+window.copiar = (btn, enc) => {
+  navigator.clipboard.writeText(decodeURIComponent(enc));
+  const orig = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-check"></i> OK';
+  setTimeout(() => btn.innerHTML = orig, 2000);
+};
+
+window.partilhar = async (enc) => {
+  const txt = decodeURIComponent(enc);
+  if (navigator.share) {
+    await navigator.share({ text: txt });
+  } else {
+    navigator.clipboard.writeText(txt);
+    toast('Copiado!', 's');
+  }
+};
+
+window.toast = (msg, tipo='i', dur=3000) => {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = `show ${tipo}`;
+  setTimeout(() => el.className='', dur);
+};
+</script>
+</body>
+</html>
