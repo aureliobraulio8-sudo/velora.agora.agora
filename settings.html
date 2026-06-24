@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>VELORA — Definições</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+:root { --bg:#000; --bg2:#080008; --bg3:#0d000d; --border:#1a001a; --accent:#d414bd; --accent2:#9b12d4; --text:#fff; --text2:#bbb; --text3:#555; --fs:16px; }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+body.light { --bg:#f8f8f8; --bg2:#fff; --bg3:#f0f0f0; --border:#e0e0e0; --text:#111; --text2:#555; --text3:#999; }
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100dvh; font-size:var(--fs); }
+header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; background:var(--bg); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:10; }
+body.light header { background:var(--bg2); }
+main { padding:12px 16px 100px; max-width:480px; margin:0 auto; }
+.sec { margin-top:22px; }
+.sec-label { font-size:10px; font-weight:700; letter-spacing:2px; color:var(--text3); text-transform:uppercase; margin-bottom:4px; padding:0 4px; }
+.sec-line { height:1px; background:linear-gradient(to right,var(--accent),transparent); margin-bottom:4px; }
+.card { background:var(--bg2); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+.item { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--border); cursor:pointer; min-height:58px; }
+.item:last-child { border-bottom:none; }
+.item:active { background:var(--bg3); }
+.item-l { display:flex; align-items:center; gap:14px; flex:1; }
+.ic { width:36px; height:36px; border-radius:10px; background:var(--bg3); display:flex; align-items:center; justify-content:center; font-size:15px; color:var(--accent); flex-shrink:0; }
+.item-title { font-size:15px; font-weight:500; color:var(--text); }
+.item-sub { font-size:12px; color:var(--text3); margin-top:2px; }
+.item-r { color:var(--text3); font-size:13px; flex-shrink:0; }
+.chevron { color:var(--accent); font-size:11px; margin-left:4px; }
+.tog { width:48px; height:26px; background:#333; border-radius:13px; position:relative; cursor:pointer; border:none; flex-shrink:0; }
+.tog.on { background:var(--accent); }
+.tog::after { content:''; position:absolute; width:20px; height:20px; border-radius:50%; background:#fff; top:3px; left:3px; transition:transform .2s; }
+.tog.on::after { transform:translateX(22px); }
+.profile-card { background:var(--bg2); border:1px solid var(--border); border-radius:20px; padding:24px 16px 16px; text-align:center; margin-top:16px; }
+.av { width:64px; height:64px; border-radius:50%; border:2px solid var(--accent); background:var(--bg3); display:flex; align-items:center; justify-content:center; font-size:26px; font-weight:700; color:#f472b6; margin:0 auto 12px; overflow:hidden; }
+.av img { width:100%; height:100%; object-fit:cover; border-radius:50%; }
+.p-name { font-size:18px; font-weight:700; margin-bottom:3px; }
+.p-email { font-size:13px; color:var(--text3); margin-bottom:12px; }
+.p-plan { display:inline-flex; align-items:center; gap:6px; background:rgba(212,20,189,0.1); border:1px solid rgba(212,20,189,0.3); border-radius:20px; padding:4px 14px; font-size:13px; font-weight:600; color:var(--accent); }
+.danger .item-title { color:#ef4444; }
+.danger .ic { color:#ef4444; }
+.modal-bg { position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:500; display:flex; align-items:flex-end; justify-content:center; opacity:0; pointer-events:none; transition:opacity .25s; backdrop-filter:blur(4px); }
+.modal-bg.open { opacity:1; pointer-events:all; }
+.modal { background:var(--bg2); border-radius:24px 24px 0 0; border-top:1px solid var(--border); width:100%; max-width:480px; padding:20px 20px 50px; transform:translateY(100%); transition:transform .3s cubic-bezier(.4,0,.2,1); max-height:85vh; overflow-y:auto; }
+.modal-bg.open .modal { transform:translateY(0); }
+.modal-handle { width:40px; height:4px; background:#333; border-radius:2px; margin:0 auto 16px; }
+.modal-title { font-size:18px; font-weight:700; margin-bottom:14px; }
+.opt { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; background:var(--bg3); border:1.5px solid var(--border); border-radius:12px; margin-bottom:8px; cursor:pointer; }
+.opt.sel { border-color:var(--accent); background:rgba(212,20,189,0.06); }
+.opt-name { font-weight:600; font-size:15px; }
+.opt-sub { font-size:12px; color:var(--text3); margin-top:2px; }
+.modal-inp { width:100%; background:var(--bg3); border:1.5px solid var(--border); border-radius:12px; padding:13px 16px; color:var(--text); font-size:15px; font-family:'Inter',sans-serif; outline:none; margin-bottom:10px; }
+.modal-inp:focus { border-color:var(--accent); }
+.btn-p { width:100%; padding:14px; background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; border-radius:12px; color:#fff; font-size:15px; font-weight:700; font-family:'Inter',sans-serif; cursor:pointer; margin-top:6px; }
+.btn-s { width:100%; padding:14px; background:transparent; border:1px solid var(--border); border-radius:12px; color:var(--text2); font-size:15px; font-family:'Inter',sans-serif; cursor:pointer; margin-top:8px; }
+.btn-d { width:100%; padding:14px; background:linear-gradient(135deg,#dc2626,#991b1b); border:none; border-radius:12px; color:#fff; font-size:15px; font-weight:700; font-family:'Inter',sans-serif; cursor:pointer; margin-top:8px; }
+.btn-logout { width:100%; padding:15px; background:transparent; border:1.5px solid var(--border); border-radius:14px; color:#ef4444; font-size:15px; font-weight:700; font-family:'Inter',sans-serif; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; margin-top:24px; }
+#toast { position:fixed; top:70px; left:50%; transform:translateX(-50%); background:var(--bg2); border:1px solid var(--accent); border-radius:12px; padding:10px 20px; font-size:13px; z-index:999; opacity:0; transition:opacity .3s; pointer-events:none; white-space:nowrap; max-width:90vw; }
+#toast.show { opacity:1; }
+#toast.s { border-color:#22c55e; }
+#toast.e { border-color:#ef4444; }
+.spinner { width:18px; height:18px; border:2px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:inline-block; vertical-align:middle; margin-right:6px; }
+@keyframes spin { to { transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header>
+  <button onclick="history.back()" style="background:none;border:none;color:var(--text);font-size:20px;cursor:pointer;padding:4px;"><i class="fa-solid fa-arrow-left"></i></button>
+  <h1 id="pg-title" style="font-size:18px;font-weight:900;letter-spacing:3px;">DEFINIÇÕES</h1>
+  <div style="width:28px;"></div>
+</header>
+
+<main>
+  <!-- PERFIL -->
+  <div class="profile-card">
+    <div class="av" id="av">A</div>
+    <div class="p-name" id="p-name">...</div>
+    <div class="p-email" id="p-email">...</div>
+    <div class="p-plan" id="p-plan"><i class="fa-solid fa-crown"></i> Grátis</div>
+  </div>
+
+  <!-- CONTA -->
+  <div class="sec">
+    <div class="sec-label" id="l-conta">CONTA</div>
+    <div class="sec-line"></div>
+    <div class="card">
+      <div class="item" onclick="abrirNome()">
+        <div class="item-l"><div class="ic"><i class="fa-solid fa-user"></i></div><div><div class="item-title" id="l-nome">Editar Nome</div><div class="item-sub" id="sub-nome">...</div></div></div>
+        <div class="item-r"><i class="fa-solid fa-chevron-right chevron"></i></div>
+      </div>
+      <div class="item" onclick="abrirPassword()">
+        <div class="item-l"><div class="ic"><i class="fa-solid fa-key"></i></div><div><div class="item-title" id="l-pass">Alterar Palavra-passe</div><div class="item-sub" id="l-pass-sub">Envia link de recuperação</div></div></div>
+        <div class="item-r"><i class="fa-solid fa-chevron-right chevron"></i></div>
+      </div>
+      <div class="item" onclick="location.href='plus.html'">
+        <div class="item-l"><div class="ic"><i class="fa-solid fa-crown"></i></div><div><div class="item-title" id="l-plano">Plano Actual</div><div class="item-sub" id="sub-plano">Grátis</div></div></div>
+        <div class="item-r" style="color:var(--accent);font-weight:600;" id="l-upgrade">Upgrade <i class="fa-solid fa-chevron-right chevron"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APARÊNCIA -->
+  <div class="sec">
+    <div class="sec-label" id="l-aparencia">APARÊNCIA</div>
+    <div class="sec-line"></div>
+    <div class="card">
+      <div class="item">
+        <div class="item-l"><div class="ic"><i class="fa-solid fa-moon"></i></div><div><div class="item-title" id="l-dark">Modo Escuro</div><div class="item-sub" id="sub-dark">Activo</div></div></div>
+        <button class="tog on" id="tog-dark" onclick="toggleDark(this)"></button>
+      </div>
+      <div class="item" onclick="abrirIdioma()">
+        <div class="item-l"><div class="ic"><i class="fa-solid fa-globe"></i></div><div><div class="item-title" id="l-lang">Idioma</div><div class="item-sub" id="sub-lang">Português</div></div></div>
+        <div class="item-r"><i class="fa-solid fa-chevron-right chevron"></i></div>
+      </div>
+      <div class="item" onclick="abrirFonte()">
+        <div class="item-l"><div class="ic" style="font-size:13px;font-weight:800;">Aa</div><div><div class="item-title" id="l-fonte">Tamanho das Letras</div><div class="item-sub" id="sub-fonte">Normal</div></div></div>
+        <div class="item-r"><i class="fa-solid fa-chevron-right chevron"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IA & CHAT -->
+  <div class="sec">
+    <div class="sec-label" id="l-ia">IA E CHAT</div>
+    <div class="sec-line"></div>
+    <div class="card">
+      <div class="item" onclick="abrirModelo()">
+        <div class="item-l"><div class="ic"><i class="fa-solid fa-robot"></i></div><div><div class="item-title" id="l-modelo">Modelo de IA</div><div class="item-sub" id="sub-modelo">VELORA Flash</div></div></div>
+        <div class="item-r"><i class="fa-solid fa-chevron-right chevron"></i></div>
+      </div>
+      <div class="item">
+        <div class="item-l"><div class="ic"><i class="fa-regular fa-message"></i></div><div><div class="item-title" id="l-hist">Guardar Histórico</div><div class="item-sub" id="l-hist-sub">Conversas guardadas localmente</div></div></div>
+        <button class="tog on" id="tog-hist" onclick="toggleHist(this)"></button>
+      </div>
+      <div class="item" onclick="limparHist()">
+        <div class="item-l"><div class="ic"><i class="fa-solid fa-trash-can"></i></div><div><div class="item-title" id="l-limpar">Limpar Histórico</div><div class="item-sub" id="l-limpar-sub">Apaga todas as conversas</div></div></div>
+        <div class="item-r" style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:5px 12px;color:#f87171;font-size:12px;font-weight:600;" id="l-limpar-btn">Limpar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICAÇÕES -->
+  <div class="sec">
+    <div class="sec-label" id="l-notif-sec">NOTIFICAÇÕES</div>
+    <div class="sec-line"></div>
+    <div class="card">
+      <div class="item">
+        <div class="item-l"><div class="ic"><i class="fa-solid fa-bell"></i></div><div><div class="item-title" id="l-push">Push Notifications</div><div class="item-sub" id="sub-push">Desactivadas</div></div></div>
+        <button class="tog" id="tog-notif" onclick="toggleNotif(this)"></button>
+      </div>
+      <div class="item">
+        <div class="item-l"><div class="ic"><i class="fa-solid fa-volume-high"></i></div><div><div class="item-title" id="l-sons">Sons</div><div class="item-sub" id="sub-sons">Activados</div></div></div>
+        <button class="tog on" id="tog-sons" onclick="toggleSons(this)"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRIVACIDADE -->
+  <div class="sec">
+    <div class="sec-label" id="l-priv-sec">PRIVACIDADE</div>
+    <div class="sec-line"></div>
+    <div class="card">
+      <div class="item" onclick="abrirPriv()">
+        <div class="item-l"><div class="ic"><i class="fa-solid fa-shield-halved"></i></div><div><div class="item-title" id="l-priv">Dados e Privacidade</div></div></div>
+        <div class="item-r"><i class="fa-solid fa-chevron-right chevron"></i></div>
+      </div>
+      <div class="item" onclick="abrirSuporte()">
+        <div class="item-l"><div class="ic"><i class="fa-regular fa-circle-question"></i></div><div><div class="item-title" id="l-sup">Ajuda e Suporte</div></div></div>
+        <div class="item-r"><i class="fa-solid fa-chevron-right chevron"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOBRE -->
+  <div class="sec">
+    <div class="sec-label" id="l-sobre">SOBRE</div>
+    <div class="sec-line"></div>
+    <div class="card">
+      <div class="item">
+        <div class="item-l"><div class="ic"><i class="fa-solid fa-circle-info"></i></div><div class="item-title" id="l-versao">Versão</div></div>
+        <div class="item-r">v1.0.0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERIGO -->
+  <div class="sec">
+    <div class="sec-label" id="l-perigo">ZONA DE PERIGO</div>
+    <div class="sec-line"></div>
+    <div class="card danger">
+      <div class="item" onclick="abrirEliminar()">
+        <div class="item-l"><div class="ic"><i class="fa-solid fa-user-xmark"></i></div><div><div class="item-title" id="l-eliminar">Eliminar Conta</div><div class="item-sub" style="color:#7f1d1d;" id="l-eliminar-sub">Esta acção é irreversível</div></div></div>
+        <i class="fa-solid fa-trash-can" style="color:#ef4444;"></i>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn-logout" onclick="abrirLogout()">
+    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    <span id="l-sair">Sair da Conta</span>
+  </button>
+</main>
+
+<!-- MODAIS -->
+<div class="modal-bg" id="m-nome"><div class="modal"><div class="modal-handle"></div><div class="modal-title" id="m-nome-title">Editar Nome</div><input class="modal-inp" id="inp-nome" type="text" placeholder="O teu nome"/><button class="btn-p" onclick="guardarNome()" id="btn-guardar">Guardar</button><button class="btn-s" onclick="fechar('m-nome')" id="btn-cancelar">Cancelar</button></div></div>
+
+<div class="modal-bg" id="m-pass"><div class="modal"><div class="modal-handle"></div><div class="modal-title" id="m-pass-title">Alterar Palavra-passe</div><p style="color:var(--text2);font-size:14px;margin-bottom:16px;line-height:1.6;" id="m-pass-msg">Vamos enviar um e-mail de recuperação.</p><button class="btn-p" id="btn-send-pass" onclick="enviarPass()">Enviar E-mail</button><button class="btn-s" onclick="fechar('m-pass')" id="btn-cancelar2">Cancelar</button></div></div>
+
+<div class="modal-bg" id="m-idioma"><div class="modal"><div class="modal-handle"></div><div class="modal-title" id="m-idioma-title">Seleccionar Idioma</div><div id="lista-idioma"></div><button class="btn-s" onclick="fechar('m-idioma')" id="btn-fechar-idioma">Fechar</button></div></div>
+
+<div class="modal-bg" id="m-fonte"><div class="modal"><div class="modal-handle"></div><div class="modal-title" id="m-fonte-title">Tamanho das Letras</div><div id="lista-fonte"></div><button class="btn-s" onclick="fechar('m-fonte')" id="btn-fechar-fonte">Fechar</button></div></div>
+
+<div class="modal-bg" id="m-modelo"><div class="modal"><div class="modal-handle"></div><div class="modal-title" id="m-modelo-title">Modelo de IA</div><div id="lista-modelo"></div><button class="btn-s" onclick="fechar('m-modelo')" id="btn-fechar-modelo">Fechar</button></div></div>
+
+<div class="modal-bg" id="m-priv"><div class="modal"><div class="modal-handle"></div><div class="modal-title" id="m-priv-title">Dados e Privacidade</div><p style="color:var(--text2);font-size:14px;line-height:1.8;" id="m-priv-txt">As conversas são guardadas localmente. O login é gerido pelo Firebase. Não partilhamos dados com terceiros.</p><button class="btn-s" onclick="fechar('m-priv')" style="margin-top:16px;" id="btn-fechar-priv">Fechar</button></div></div>
+
+<div class="modal-bg" id="m-sup"><div class="modal"><div class="modal-handle"></div><div class="modal-title" id="m-sup-title">Ajuda e Suporte</div><div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px;"><div style="font-weight:600;margin-bottom:4px;" id="sup-email-label">E-mail de Suporte</div><div style="color:var(--text2);font-size:13px;">suporte@velora.ai</div></div><div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px;"><div style="font-weight:600;margin-bottom:4px;" id="sup-hours-label">Horário</div><div style="color:var(--text2);font-size:13px;" id="sup-hours-val">Segunda a Sexta, 9h às 18h</div></div><button class="btn-s" onclick="fechar('m-sup')" style="margin-top:8px;" id="btn-fechar-sup">Fechar</button></div></div>
+
+<div class="modal-bg" id="m-logout"><div class="modal"><div class="modal-handle"></div><div class="modal-title" id="m-logout-title">Sair da conta?</div><p style="color:var(--text2);font-size:14px;margin-bottom:20px;" id="m-logout-msg">Tens a certeza que queres sair?</p><div style="display:flex;gap:10px;"><button onclick="fechar('m-logout')" style="flex:1;padding:14px;background:transparent;border:1px solid var(--border);border-radius:12px;color:var(--text2);font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;" id="btn-cancelar-logout">Cancelar</button><button onclick="fazerLogout()" style="flex:1;padding:14px;background:linear-gradient(135deg,#dc2626,#991b1b);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;" id="btn-sair">Sair</button></div></div></div>
+
+<div class="modal-bg" id="m-eliminar"><div class="modal"><div class="modal-handle"></div><div class="modal-title" style="color:#ef4444;" id="m-eliminar-title">Eliminar conta?</div><p style="color:var(--text2);font-size:14px;margin-bottom:20px;line-height:1.6;" id="m-eliminar-msg">Esta acção é irreversível. Todos os teus dados serão apagados.</p><button class="btn-d" onclick="eliminarConta()" id="btn-eliminar">Eliminar Definitivamente</button><button class="btn-s" onclick="fechar('m-eliminar')" id="btn-cancelar-eliminar">Cancelar</button></div></div>
+
+<div id="toast"></div>
+
+<!-- Firebase sem module para evitar conflitos -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut, deleteUser, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyAW2ISQ2TKR2p0-QF_v0aADiD-ttDpGm3c",
+  authDomain: "velora-ia-e2539.firebaseapp.com",
+  projectId: "velora-ia-e2539",
+  storageBucket: "velora-ia-e2539.firebasestorage.app",
+  messagingSenderId: "876348453170",
+  appId: "1:876348453170:web:bcca8ebde23563e26a412b"
+});
+
+const auth = getAuth(app);
+
+// Sistema simples de preferências (sem depender do velora.js)
+const P = {
+  get: (k, d) => { try { return JSON.parse(localStorage.getItem('vp_'+k)) ?? d; } catch { return d; } },
+  set: (k, v) => localStorage.setItem('vp_'+k, JSON.stringify(v))
+};
+
+// Traduções inline
+const TT = {
+  pt: { settings:'DEFINIÇÕES', sec_conta:'CONTA', sec_aparencia:'APARÊNCIA', sec_ia:'IA E CHAT', sec_notif:'NOTIFICAÇÕES', sec_priv:'PRIVACIDADE', sec_sobre:'SOBRE', sec_perigo:'ZONA DE PERIGO', edit_name:'Editar Nome', change_pass:'Alterar Palavra-passe', change_pass_sub:'Envia link de recuperação', plan:'Plano Actual', dark:'Modo Escuro', dark_on:'Activo', dark_off:'Desactivado', language:'Idioma', font:'Tamanho das Letras', model:'Modelo de IA', hist:'Guardar Histórico', hist_sub:'Conversas guardadas localmente', clear:'Limpar Histórico', clear_sub:'Apaga todas as conversas', clear_btn:'Limpar', push:'Push Notifications', push_off:'Desactivadas', push_on:'Activadas', sounds:'Sons', sounds_on:'Activados', sounds_off:'Desactivados', priv:'Dados e Privacidade', support:'Ajuda e Suporte', version:'Versão', delete:'Eliminar Conta', delete_sub:'Esta acção é irreversível', logout:'Sair da Conta', upgrade:'Upgrade', modal_nome:'Editar Nome', save:'Guardar', cancel:'Cancelar', modal_pass:'Alterar Palavra-passe', pass_msg:'Vamos enviar um e-mail de recuperação para ', send_email:'Enviar E-mail', modal_idioma:'Seleccionar Idioma', close:'Fechar', modal_fonte:'Tamanho das Letras', modal_modelo:'Modelo de IA', modal_priv:'Dados e Privacidade', priv_txt:'As conversas são guardadas localmente. O login é gerido pelo Firebase. Não partilhamos dados com terceiros.', modal_sup:'Ajuda e Suporte', sup_email:'E-mail de Suporte', sup_hours:'Horário', sup_hours_val:'Segunda a Sexta, 9h às 18h', modal_logout:'Sair da conta?', logout_msg:'Tens a certeza que queres sair?', exit:'Sair', modal_eliminar:'Eliminar conta?', eliminar_msg:'Esta acção é irreversível. Todos os teus dados serão apagados.', eliminar_btn:'Eliminar Definitivamente', font_small:'Pequena', font_normal:'Normal', font_large:'Grande', font_xlarge:'Muito Grande', flash:'VELORA Flash', flash_sub:'Rápido e eficiente — Grátis', pro:'VELORA Pro', pro_sub:'Mais avançado — Plus', model_updated:'Modelo actualizado.', lang_updated:'Idioma actualizado.', font_updated:'Tamanho actualizado.', name_updated:'Nome actualizado.', pass_sent:'E-mail enviado!', hist_cleared:'Histórico apagado.', notif_on:'Notificações activadas.', notif_denied:'Permissão negada.', notif_off:'Notificações desactivadas.', sounds_updated:'Sons actualizados.', dark_on_msg:'Modo escuro activado.', dark_off_msg:'Modo claro activado.', pt_name:'Português', en_name:'English', es_name:'Español' },
+  en: { settings:'SETTINGS', sec_conta:'ACCOUNT', sec_aparencia:'APPEARANCE', sec_ia:'AI & CHAT', sec_notif:'NOTIFICATIONS', sec_priv:'PRIVACY', sec_sobre:'ABOUT', sec_perigo:'DANGER ZONE', edit_name:'Edit Name', change_pass:'Change Password', change_pass_sub:'Send recovery link', plan:'Current Plan', dark:'Dark Mode', dark_on:'Active', dark_off:'Inactive', language:'Language', font:'Font Size', model:'AI Model', hist:'Save History', hist_sub:'Conversations saved locally', clear:'Clear History', clear_sub:'Delete all conversations', clear_btn:'Clear', push:'Push Notifications', push_off:'Disabled', push_on:'Enabled', sounds:'Sounds', sounds_on:'Active', sounds_off:'Inactive', priv:'Data & Privacy', support:'Help & Support', version:'Version', delete:'Delete Account', delete_sub:'This action is irreversible', logout:'Sign Out', upgrade:'Upgrade', modal_nome:'Edit Name', save:'Save', cancel:'Cancel', modal_pass:'Change Password', pass_msg:'We will send a recovery email to ', send_email:'Send Email', modal_idioma:'Select Language', close:'Close', modal_fonte:'Font Size', modal_modelo:'AI Model', modal_priv:'Data & Privacy', priv_txt:'Conversations are stored locally. Login is managed by Firebase. We do not share data with third parties.', modal_sup:'Help & Support', sup_email:'Support Email', sup_hours:'Hours', sup_hours_val:'Monday to Friday, 9am to 6pm', modal_logout:'Sign out?', logout_msg:'Are you sure you want to sign out?', exit:'Sign Out', modal_eliminar:'Delete account?', eliminar_msg:'This action is irreversible. All your data will be deleted.', eliminar_btn:'Delete Permanently', font_small:'Small', font_normal:'Normal', font_large:'Large', font_xlarge:'Extra Large', flash:'VELORA Flash', flash_sub:'Fast and efficient — Free', pro:'VELORA Pro', pro_sub:'More advanced — Plus', model_updated:'Model updated.', lang_updated:'Language updated.', font_updated:'Size updated.', name_updated:'Name updated.', pass_sent:'Email sent!', hist_cleared:'History cleared.', notif_on:'Notifications enabled.', notif_denied:'Permission denied.', notif_off:'Notifications disabled.', sounds_updated:'Sounds updated.', dark_on_msg:'Dark mode active.', dark_off_msg:'Light mode active.', pt_name:'Português', en_name:'English', es_name:'Español' },
+  es: { settings:'AJUSTES', sec_conta:'CUENTA', sec_aparencia:'APARIENCIA', sec_ia:'IA Y CHAT', sec_notif:'NOTIFICACIONES', sec_priv:'PRIVACIDAD', sec_sobre:'ACERCA DE', sec_perigo:'ZONA DE PELIGRO', edit_name:'Editar Nombre', change_pass:'Cambiar Contraseña', change_pass_sub:'Envía enlace de recuperación', plan:'Plan Actual', dark:'Modo Oscuro', dark_on:'Activo', dark_off:'Inactivo', language:'Idioma', font:'Tamaño de Letra', model:'Modelo de IA', hist:'Guardar Historial', hist_sub:'Conversaciones guardadas localmente', clear:'Limpiar Historial', clear_sub:'Elimina todas las conversaciones', clear_btn:'Limpiar', push:'Notificaciones Push', push_off:'Desactivadas', push_on:'Activadas', sounds:'Sonidos', sounds_on:'Activados', sounds_off:'Desactivados', priv:'Datos y Privacidad', support:'Ayuda y Soporte', version:'Versión', delete:'Eliminar Cuenta', delete_sub:'Esta acción es irreversible', logout:'Cerrar Sesión', upgrade:'Mejorar', modal_nome:'Editar Nombre', save:'Guardar', cancel:'Cancelar', modal_pass:'Cambiar Contraseña', pass_msg:'Enviaremos un correo de recuperación a ', send_email:'Enviar Correo', modal_idioma:'Seleccionar Idioma', close:'Cerrar', modal_fonte:'Tamaño de Letra', modal_modelo:'Modelo de IA', modal_priv:'Datos y Privacidad', priv_txt:'Las conversaciones se guardan localmente. El inicio de sesión es gestionado por Firebase. No compartimos datos con terceros.', modal_sup:'Ayuda y Soporte', sup_email:'E-mail de Soporte', sup_hours:'Horario', sup_hours_val:'Lunes a Viernes, 9h a 18h', modal_logout:'¿Cerrar sesión?', logout_msg:'¿Seguro que quieres cerrar sesión?', exit:'Salir', modal_eliminar:'¿Eliminar cuenta?', eliminar_msg:'Esta acción es irreversible. Todos tus datos serán eliminados.', eliminar_btn:'Eliminar Definitivamente', font_small:'Pequeña', font_normal:'Normal', font_large:'Grande', font_xlarge:'Muy Grande', flash:'VELORA Flash', flash_sub:'Rápido y eficiente — Gratis', pro:'VELORA Pro', pro_sub:'Más avanzado — Plus', model_updated:'Modelo actualizado.', lang_updated:'Idioma actualizado.', font_updated:'Tamaño actualizado.', name_updated:'Nombre actualizado.', pass_sent:'¡Correo enviado!', hist_cleared:'Historial eliminado.', notif_on:'Notificaciones activadas.', notif_denied:'Permiso denegado.', notif_off:'Notificaciones desactivadas.', sounds_updated:'Sonidos actualizados.', dark_on_msg:'Modo oscuro activo.', dark_off_msg:'Modo claro activo.', pt_name:'Português', en_name:'English', es_name:'Español' }
+};
+
+function lang() { return P.get('lang','pt'); }
+function tr(k) { return TT[lang()]?.[k] || TT.pt[k] || k; }
+
+function aplicarTextos(u) {
+  const l = lang();
+  document.getElementById('pg-title').textContent = tr('settings');
+  document.getElementById('l-conta').textContent = tr('sec_conta');
+  document.getElementById('l-aparencia').textContent = tr('sec_aparencia');
+  document.getElementById('l-ia').textContent = tr('sec_ia');
+  document.getElementById('l-notif-sec').textContent = tr('sec_notif');
+  document.getElementById('l-priv-sec').textContent = tr('sec_priv');
+  document.getElementById('l-sobre').textContent = tr('sec_sobre');
+  document.getElementById('l-perigo').textContent = tr('sec_perigo');
+  document.getElementById('l-nome').textContent = tr('edit_name');
+  document.getElementById('sub-nome').textContent = u?.displayName || u?.email?.split('@')[0] || '...';
+  document.getElementById('l-pass').textContent = tr('change_pass');
+  document.getElementById('l-pass-sub').textContent = tr('change_pass_sub');
+  document.getElementById('l-plano').textContent = tr('plan');
+  document.getElementById('sub-plano').textContent = P.get('plano','Grátis');
+  document.getElementById('l-upgrade').innerHTML = tr('upgrade') + ' <i class="fa-solid fa-chevron-right chevron"></i>';
+  document.getElementById('l-dark').textContent = tr('dark');
+  const darkOn = P.get('dark',true);
+  document.getElementById('sub-dark').textContent = darkOn ? tr('dark_on') : tr('dark_off');
+  document.getElementById('l-lang').textContent = tr('language');
+  document.getElementById('sub-lang').textContent = P.get('idioma', tr('pt_name'));
+  document.getElementById('l-fonte').textContent = tr('font');
+  const fontePx = P.get('fonte',16);
+  const fonteNomes = { 13: tr('font_small'), 16: tr('font_normal'), 18: tr('font_large'), 20: tr('font_xlarge') };
+  document.getElementById('sub-fonte').textContent = fonteNomes[fontePx] || tr('font_normal');
+  document.getElementById('l-modelo').textContent = tr('model');
+  document.getElementById('sub-modelo').textContent = P.get('modelo', tr('flash'));
+  document.getElementById('l-hist').textContent = tr('hist');
+  document.getElementById('l-hist-sub').textContent = tr('hist_sub');
+  document.getElementById('l-limpar').textContent = tr('clear');
+  document.getElementById('l-limpar-sub').textContent = tr('clear_sub');
+  document.getElementById('l-limpar-btn').textContent = tr('clear_btn');
+  document.getElementById('l-push').textContent = tr('push');
+  document.getElementById('l-sons').textContent = tr('sounds');
+  document.getElementById('l-priv').textContent = tr('priv');
+  document.getElementById('l-sup').textContent = tr('support');
+  document.getElementById('l-versao').textContent = tr('version');
+  document.getElementById('l-eliminar').textContent = tr('delete');
+  document.getElementById('l-eliminar-sub').textContent = tr('delete_sub');
+  document.getElementById('l-sair').textContent = tr('logout');
+  document.getElementById('p-plan').innerHTML = '<i class="fa-solid fa-crown"></i> ' + P.get('plano','Grátis');
+}
+
+function aplicarTema() {
+  const dark = P.get('dark', true);
+  document.body.classList.toggle('light', !dark);
+  const tog = document.getElementById('tog-dark');
+  if (dark) tog.classList.add('on'); else tog.classList.remove('on');
+}
+
+function aplicarFonte() {
+  const px = P.get('fonte', 16);
+  document.documentElement.style.setProperty('--fs', px + 'px');
+}
+
+let currentUser = null;
+
+onAuthStateChanged(auth, u => {
+  if (!u) { window.location.href = 'index.html'; return; }
+  currentUser = u;
+  const nome = u.displayName || u.email.split('@')[0];
+  const av = document.getElementById('av');
+  if (u.photoURL) av.innerHTML = `<img src="${u.photoURL}" alt="foto">`;
+  else av.textContent = nome[0].toUpperCase();
+  document.getElementById('p-name').textContent = nome;
+  document.getElementById('p-email').textContent = u.email;
+  aplicarTema();
+  aplicarFonte();
+  aplicarTextos(u);
+  // Toggles
+  if (!P.get('hist',true)) document.getElementById('tog-hist').classList.remove('on');
+  if (!P.get('sons',true)) document.getElementById('tog-sons').classList.remove('on');
+  if (P.get('notif',false)) { document.getElementById('tog-notif').classList.add('on'); document.getElementById('sub-push').textContent = tr('push_on'); }
+});
+
+document.querySelectorAll('.modal-bg').forEach(bg => {
+  bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); });
+});
+
+window.fechar = id => document.getElementById(id).classList.remove('open');
+
+// NOME
+window.abrirNome = () => {
+  document.getElementById('inp-nome').value = currentUser?.displayName || '';
+  document.getElementById('m-nome-title').textContent = tr('modal_nome');
+  document.getElementById('btn-guardar').textContent = tr('save');
+  document.getElementById('btn-cancelar').textContent = tr('cancel');
+  document.getElementById('m-nome').classList.add('open');
+  setTimeout(() => document.getElementById('inp-nome').focus(), 300);
+};
+
+window.guardarNome = async () => {
+  const nome = document.getElementById('inp-nome').value.trim();
+  if (!nome) return;
+  const btn = document.getElementById('btn-guardar');
+  btn.innerHTML = '<span class="spinner"></span>';
+  btn.disabled = true;
+  try {
+    await updateProfile(currentUser, { displayName: nome });
+    document.getElementById('p-name').textContent = nome;
+    document.getElementById('sub-nome').textContent = nome;
+    document.getElementById('av').textContent = nome[0].toUpperCase();
+    fechar('m-nome');
+    toast(tr('name_updated'), 's');
+  } catch(e) { toast('Erro: ' + e.message, 'e'); }
+  btn.innerHTML = tr('save');
+  btn.disabled = false;
+};
+
+// PASSWORD
+window.abrirPassword = () => {
+  document.getElementById('m-pass-title').textContent = tr('modal_pass');
+  document.getElementById('m-pass-msg').textContent = tr('pass_msg') + (currentUser?.email || '');
+  document.getElementById('btn-send-pass').textContent = tr('send_email');
+  document.getElementById('btn-cancelar2').textContent = tr('cancel');
+  document.getElementById('m-pass').classList.add('open');
+};
+
+window.enviarPass = async () => {
+  const btn = document.getElementById('btn-send-pass');
+  btn.innerHTML = '<span class="spinner"></span>';
+  btn.disabled = true;
+  try {
+    await sendPasswordResetEmail(auth, currentUser.email);
+    fechar('m-pass');
+    toast(tr('pass_sent'), 's');
+  } catch(e) { toast('Erro: ' + e.message, 'e'); }
+  btn.innerHTML = tr('send_email');
+  btn.disabled = false;
+};
+
+// TEMA
+window.toggleDark = (btn) => {
+  btn.classList.toggle('on');
+  const on = btn.classList.contains('on');
+  document.body.classList.toggle('light', !on);
+  P.set('dark', on);
+  document.getElementById('sub-dark').textContent = on ? tr('dark_on') : tr('dark_off');
+  // Propagar para velora.js se disponível
+  if (window.aplicarTema) window.aplicarTema();
+  toast(on ? tr('dark_on_msg') : tr('dark_off_msg'), 's');
+};
+
+// IDIOMA
+window.abrirIdioma = () => {
+  document.getElementById('m-idioma-title').textContent = tr('modal_idioma');
+  document.getElementById('btn-fechar-idioma').textContent = tr('close');
+  const sel = lang();
+  const idiomas = [
+    { code:'pt', flag:'🇵🇹', nome: TT.pt.pt_name },
+    { code:'en', flag:'🇬🇧', nome: TT.pt.en_name },
+    { code:'es', flag:'🇪🇸', nome: TT.pt.es_name }
+  ];
+  document.getElementById('lista-idioma').innerHTML = idiomas.map(i => `
+    <div class="opt ${i.code===sel?'sel':''}" onclick="selectIdioma('${i.code}','${i.nome}')">
+      <div class="opt-l" style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:24px;">${i.flag}</span>
+        <div class="opt-name">${i.nome}</div>
+      </div>
+      ${i.code===sel?'<i class="fa-solid fa-check" style="color:var(--accent);"></i>':''}
+    </div>`).join('');
+  document.getElementById('m-idioma').classList.add('open');
+};
+
+window.selectIdioma = (code, nome) => {
+  P.set('lang', code);
+  P.set('idioma', nome);
+  fechar('m-idioma');
+  aplicarTextos(currentUser);
+  // Propagar para velora.js
+  if (window.aplicarIdioma) window.aplicarIdioma();
+  document.getElementById('sub-lang').textContent = nome;
+  toast(tr('lang_updated'), 's');
+};
+
+// FONTE
+window.abrirFonte = () => {
+  document.getElementById('m-fonte-title').textContent = tr('modal_fonte');
+  document.getElementById('btn-fechar-fonte').textContent = tr('close');
+  const sel = P.get('fonte', 16);
+  const fontes = [{px:13,k:'font_small'},{px:16,k:'font_normal'},{px:18,k:'font_large'},{px:20,k:'font_xlarge'}];
+  const preview = `<div style="padding:14px;background:var(--bg3);border-radius:12px;margin-bottom:12px;text-align:center;" id="font-preview">Texto de exemplo — VELORA IA</div>`;
+  document.getElementById('lista-fonte').innerHTML = preview + fontes.map(f => `
+    <div class="opt ${f.px===sel?'sel':''}" onclick="selectFonte(${f.px})">
+      <div style="font-size:${f.px}px;font-weight:500;">${tr(f.k)}</div>
+      ${f.px===sel?'<i class="fa-solid fa-check" style="color:var(--accent);"></i>':''}
+    </div>`).join('');
+  document.getElementById('m-fonte').classList.add('open');
+};
+
+window.selectFonte = (px) => {
+  P.set('fonte', px);
+  document.documentElement.style.setProperty('--fs', px + 'px');
+  if (window.aplicarFonte) window.aplicarFonte();
+  fechar('m-fonte');
+  aplicarTextos(currentUser);
+  toast(tr('font_updated'), 's');
+};
+
+// MODELO
+window.abrirModelo = () => {
+  document.getElementById('m-modelo-title').textContent = tr('modal_modelo');
+  document.getElementById('btn-fechar-modelo').textContent = tr('close');
+  const sel = P.get('modelo', tr('flash'));
+  document.getElementById('lista-modelo').innerHTML = [
+    {k:'flash', sub:'flash_sub', free:true},
+    {k:'pro', sub:'pro_sub', free:false}
+  ].map(m => `
+    <div class="opt ${tr(m.k)===sel?'sel':''}" onclick="selectModelo('${m.k}',${m.free})">
+      <div><div class="opt-name">${tr(m.k)}${!m.free?' 👑':''}</div><div class="opt-sub">${tr(m.sub)}</div></div>
+      ${tr(m.k)===sel?'<i class="fa-solid fa-check" style="color:var(--accent);"></i>':''}
+    </div>`).join('');
+  document.getElementById('m-modelo').classList.add('open');
+};
+
+window.selectModelo = (k, free) => {
+  if (!free && P.get('plano','Grátis') !== 'Plus') { fechar('m-modelo'); setTimeout(() => location.href='plus.html', 300); return; }
+  P.set('modelo', tr(k));
+  document.getElementById('sub-modelo').textContent = tr(k);
+  fechar('m-modelo');
+  toast(tr('model_updated'), 's');
+};
+
+// HISTÓRICO
+window.toggleHist = (btn) => {
+  btn.classList.toggle('on');
+  P.set('hist', btn.classList.contains('on'));
+};
+
+window.limparHist = () => {
+  if (!currentUser) return;
+  if (!confirm(tr('clear') + '?')) return;
+  localStorage.removeItem('vh_' + currentUser.uid);
+  localStorage.removeItem('vf_' + currentUser.uid);
+  toast(tr('hist_cleared'), 's');
+};
+
+// NOTIFICAÇÕES
+window.toggleNotif = async (btn) => {
+  if (!btn.classList.contains('on')) {
+    if (!('Notification' in window)) { toast(tr('notif_denied'), 'e'); return; }
+    const p = await Notification.requestPermission();
+    if (p === 'granted') {
+      btn.classList.add('on');
+      document.getElementById('sub-push').textContent = tr('push_on');
+      P.set('notif', true);
+      toast(tr('notif_on'), 's');
+    } else { toast(tr('notif_denied'), 'e'); }
+  } else {
+    btn.classList.remove('on');
+    document.getElementById('sub-push').textContent = tr('push_off');
+    P.set('notif', false);
+    toast(tr('notif_off'), 's');
+  }
+};
+
+window.toggleSons = (btn) => {
+  btn.classList.toggle('on');
+  const on = btn.classList.contains('on');
+  document.getElementById('sub-sons').textContent = on ? tr('sounds_on') : tr('sounds_off');
+  P.set('sons', on);
+  toast(tr('sounds_updated'), 's');
+};
+
+// MODAIS SIMPLES
+window.abrirPriv = () => {
+  document.getElementById('m-priv-title').textContent = tr('modal_priv');
+  document.getElementById('m-priv-txt').textContent = tr('priv_txt');
+  document.getElementById('btn-fechar-priv').textContent = tr('close');
+  document.getElementById('m-priv').classList.add('open');
+};
+window.abrirSuporte = () => {
+  document.getElementById('m-sup-title').textContent = tr('modal_sup');
+  document.getElementById('sup-email-label').textContent = tr('sup_email');
+  document.getElementById('sup-hours-label').textContent = tr('sup_hours');
+  document.getElementById('sup-hours-val').textContent = tr('sup_hours_val');
+  document.getElementById('btn-fechar-sup').textContent = tr('close');
+  document.getElementById('m-sup').classList.add('open');
+};
+window.abrirLogout = () => {
+  document.getElementById('m-logout-title').textContent = tr('modal_logout');
+  document.getElementById('m-logout-msg').textContent = tr('logout_msg');
+  document.getElementById('btn-cancelar-logout').textContent = tr('cancel');
+  document.getElementById('btn-sair').textContent = tr('exit');
+  document.getElementById('m-logout').classList.add('open');
+};
+window.fazerLogout = async () => { await signOut(auth); localStorage.clear(); window.location.href = 'index.html'; };
+window.abrirEliminar = () => {
+  document.getElementById('m-eliminar-title').textContent = tr('modal_eliminar');
+  document.getElementById('m-eliminar-msg').textContent = tr('eliminar_msg');
+  document.getElementById('btn-eliminar').textContent = tr('eliminar_btn');
+  document.getElementById('btn-cancelar-eliminar').textContent = tr('cancel');
+  document.getElementById('m-eliminar').classList.add('open');
+};
+window.eliminarConta = async () => {
+  try { localStorage.clear(); await deleteUser(currentUser); window.location.href = 'index.html'; }
+  catch(e) { fechar('m-eliminar'); if (e.code === 'auth/requires-recent-login') { toast('Faz login novamente primeiro', 'e', 5000); setTimeout(() => { signOut(auth); location.href='index.html'; }, 2000); } else toast('Erro: ' + e.message, 'e'); }
+};
+
+window.toast = (msg, tipo='i', dur=3000) => {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.className = `show ${tipo}`;
+  setTimeout(() => el.className='', dur);
+};
+</script>
+</body>
+</html>
