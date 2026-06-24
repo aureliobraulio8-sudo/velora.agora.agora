@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>VELORA IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+<script src="velora.js"></script>
+<style>
+:root { --bg:#000; --bg2:#080008; --bg3:#0d000d; --border:#1a001a; --accent:#d414bd; --accent2:#9b12d4; --text:#fff; --text2:#bbb; --text3:#555; --fs:15px; }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+
+body.light { --bg:#f8f8f8; --bg2:#fff; --bg3:#f0f0f0; --border:#e0e0e0; --text:#111; --text2:#555; --text3:#999; }
+
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100dvh; display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:50px 24px 30px; overflow:hidden; position:relative; font-size:var(--fs); transition:background .3s,color .3s; }
+
+.neon { position:fixed; bottom:-120px; left:50%; transform:translateX(-50%); width:130%; height:400px; background:radial-gradient(ellipse,rgba(212,20,189,0.3) 0%,transparent 70%); filter:blur(50px); pointer-events:none; z-index:0; }
+body.light .neon { opacity:0.3; }
+
+.content { position:relative; z-index:1; width:100%; max-width:420px; }
+
+.logo { font-size:56px; font-weight:900; letter-spacing:-2px; font-style:italic; text-align:center; margin-bottom:10px; }
+.tagline { color:var(--text2); font-size:15px; text-align:center; line-height:1.6; margin-bottom:40px; }
+
+.btn-google { width:100%; display:flex; align-items:center; justify-content:center; gap:12px; background:var(--bg2); color:var(--text); border:1px solid var(--border); border-radius:14px; padding:16px; font-size:16px; font-weight:700; cursor:pointer; font-family:'Inter',sans-serif; transition:all .2s; margin-bottom:16px; }
+.btn-google:hover { background:var(--bg3); transform:translateY(-1px); }
+body.light .btn-google { background:#fff; box-shadow:0 2px 12px rgba(0,0,0,0.1); color:#111; }
+
+.divider { display:flex; align-items:center; gap:12px; margin:4px 0 16px; }
+.divider div { flex:1; height:1px; background:var(--border); }
+.divider span { color:var(--text3); font-size:13px; }
+
+.inp { width:100%; background:var(--bg2); border:1.5px solid var(--border); border-radius:14px; padding:15px 18px; color:var(--text); font-size:15px; font-family:'Inter',sans-serif; outline:none; transition:border-color .2s; margin-bottom:10px; display:block; }
+.inp:focus { border-color:var(--accent); }
+.inp::placeholder { color:var(--text3); }
+body.light .inp { background:#fff; box-shadow:0 1px 6px rgba(0,0,0,0.06); }
+
+.btn-primary { width:100%; background:linear-gradient(135deg,var(--accent),var(--accent2)); border:none; border-radius:14px; padding:16px; color:#fff; font-size:16px; font-weight:700; font-family:'Inter',sans-serif; cursor:pointer; transition:all .2s; margin-top:6px; display:flex; align-items:center; justify-content:center; gap:10px; }
+.btn-primary:hover { transform:translateY(-1px); box-shadow:0 8px 24px rgba(212,20,189,0.4); }
+.btn-primary:disabled { opacity:0.6; cursor:not-allowed; transform:none; box-shadow:none; }
+
+.switch-mode { text-align:center; margin-top:16px; font-size:14px; color:var(--text3); }
+.switch-mode a { color:var(--accent); font-weight:600; cursor:pointer; text-decoration:none; }
+
+.error-box { background:rgba(220,38,38,0.1); border:1px solid rgba(220,38,38,0.3); border-radius:12px; padding:12px 16px; font-size:13px; color:#fca5a5; margin-bottom:12px; display:none; text-align:center; }
+.success-box { background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.3); border-radius:12px; padding:12px 16px; font-size:13px; color:#86efac; margin-bottom:12px; display:none; text-align:center; }
+
+.spinner { width:20px; height:20px; border:2px solid rgba(255,255,255,0.3); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; flex-shrink:0; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+.forgot { text-align:right; font-size:13px; margin-bottom:6px; }
+.forgot a { color:var(--accent); cursor:pointer; text-decoration:none; }
+
+footer { text-align:center; font-size:12px; color:var(--text3); line-height:1.6; position:relative; z-index:1; }
+footer a { color:var(--accent); text-decoration:none; }
+
+#ls { position:fixed; inset:0; background:#000; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:999; }
+#ls.h { display:none; }
+.ls-spin { width:28px; height:28px; border:3px solid rgba(212,20,189,0.2); border-top-color:#d414bd; border-radius:50%; animation:spin .7s linear infinite; margin-top:20px; }
+</style>
+</head>
+<body>
+
+<div id="ls">
+  <div style="font-size:44px;font-weight:900;font-style:italic;letter-spacing:-1px;">VELORA IA</div>
+  <div class="ls-spin"></div>
+</div>
+
+<div class="neon"></div>
+
+<header class="content" style="text-align:center;margin-top:20px;">
+  <div class="logo">VELORA IA</div>
+  <p class="tagline" data-t="tagline">A tua assistente de inteligência artificial pessoal</p>
+</header>
+
+<main class="content" id="main-form">
+  <button class="btn-google" id="btn-google" onclick="loginGoogle()">
+    <svg width="22" height="22" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+    <span data-t="btn_google">Continuar com Google</span>
+  </button>
+
+  <div class="divider"><div></div><span data-t="or">ou</span><div></div></div>
+
+  <div class="error-box" id="error-box"></div>
+  <div class="success-box" id="success-box"></div>
+
+  <input class="inp" id="email" type="email" data-t-ph="email_ph" placeholder="E-mail" autocomplete="email"/>
+  <input class="inp" id="password" type="password" data-t-ph="pass_ph" placeholder="Palavra-passe" autocomplete="current-password" onkeydown="if(event.key==='Enter') submit()"/>
+  <input class="inp" id="confirm-password" type="password" data-t-ph="confirm_ph" placeholder="Confirmar palavra-passe" style="display:none;" onkeydown="if(event.key==='Enter') submit()"/>
+
+  <div class="forgot" id="forgot-wrap"><a onclick="resetPass()" data-t="forgot">Esqueceste a palavra-passe?</a></div>
+
+  <button class="btn-primary" id="btn-submit" onclick="submit()">
+    <span id="btn-txt" data-t="btn_access">Entrar</span>
+  </button>
+
+  <div class="switch-mode" id="switch-text">
+    <span data-t="no_account">Não tens conta?</span> <a onclick="toRegister()" data-t="create_account">Criar conta</a>
+  </div>
+</main>
+
+<footer>
+  <span data-t="agree">Ao continuar concordas com os</span>
+  <a href="#" data-t="terms">Termos de Uso</a> <span data-t="and">e</span>
+  <a href="#" data-t="privacy_p">Política de Privacidade</a>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const app  = initializeApp({ apiKey:"AIzaSyAW2ISQ2TKR2p0-QF_v0aADiD-ttDpGm3c", authDomain:"velora-ia-e2539.firebaseapp.com", projectId:"velora-ia-e2539", storageBucket:"velora-ia-e2539.firebasestorage.app", messagingSenderId:"876348453170", appId:"1:876348453170:web:bcca8ebde23563e26a412b" });
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+let isReg = false;
+
+// Aplicar placeholder inputs com data-t-ph
+function aplicarPH() {
+  document.querySelectorAll('[data-t-ph]').forEach(el => {
+    el.placeholder = t(el.getAttribute('data-t-ph'));
+  });
+}
+
+onAuthStateChanged(auth, u => {
+  if (u) { window.location.href = 'chat.html'; return; }
+  aplicarPH();
+  document.getElementById('ls').classList.add('h');
+});
+
+window.loginGoogle = async () => {
+  const btn = document.getElementById('btn-google');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div>';
+  hideMsg();
+  try {
+    await signInWithPopup(auth, provider);
+  } catch(e) {
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg><span data-t="btn_google">${t('btn_google')}</span>`;
+    showErr(errMsg(e.code));
+  }
+};
+
+window.submit = async () => {
+  const em = document.getElementById('email').value.trim();
+  const pw = document.getElementById('password').value;
+  const cp = document.getElementById('confirm-password').value;
+  hideMsg();
+  if (!em) { showErr('Insere o e-mail'); return; }
+  if (pw.length < 6) { showErr('Mínimo 6 caracteres'); return; }
+  if (isReg && pw !== cp) { showErr('Palavras-passe não coincidem'); return; }
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div>';
+  try {
+    if (isReg) await createUserWithEmailAndPassword(auth, em, pw);
+    else await signInWithEmailAndPassword(auth, em, pw);
+  } catch(e) {
+    btn.disabled = false;
+    document.getElementById('btn-txt').textContent = t(isReg ? 'btn_register' : 'btn_access');
+    btn.innerHTML = `<span id="btn-txt">${t(isReg ? 'btn_register' : 'btn_access')}</span>`;
+    showErr(errMsg(e.code));
+  }
+};
+
+window.resetPass = async () => {
+  const em = document.getElementById('email').value.trim();
+  if (!em) { showErr('Insere o e-mail primeiro'); return; }
+  try {
+    await sendPasswordResetEmail(auth, em);
+    showOk('E-mail de recuperação enviado!');
+  } catch(e) { showErr(errMsg(e.code)); }
+};
+
+window.toRegister = () => {
+  isReg = true;
+  document.getElementById('confirm-password').style.display = 'block';
+  document.getElementById('forgot-wrap').style.display = 'none';
+  document.getElementById('btn-submit').innerHTML = `<span id="btn-txt">${t('btn_register')}</span>`;
+  document.getElementById('switch-text').innerHTML = `<span>${t('have_account')}</span> <a onclick="toLogin()">${t('login_link')}</a>`;
+  hideMsg();
+};
+
+window.toLogin = () => {
+  isReg = false;
+  document.getElementById('confirm-password').style.display = 'none';
+  document.getElementById('forgot-wrap').style.display = 'block';
+  document.getElementById('btn-submit').innerHTML = `<span id="btn-txt">${t('btn_access')}</span>`;
+  document.getElementById('switch-text').innerHTML = `<span>${t('no_account')}</span> <a onclick="toRegister()">${t('create_account')}</a>`;
+  hideMsg();
+};
+
+function showErr(m) { const e=document.getElementById('error-box'); e.textContent='⚠️ '+m; e.style.display='block'; }
+function showOk(m) { const e=document.getElementById('success-box'); e.textContent='✅ '+m; e.style.display='block'; }
+function hideMsg() { document.getElementById('error-box').style.display='none'; document.getElementById('success-box').style.display='none'; }
+
+function errMsg(code) {
+  const m = {
+    'auth/invalid-email':'E-mail inválido','auth/user-not-found':'Conta não encontrada',
+    'auth/wrong-password':'Palavra-passe incorrecta','auth/invalid-credential':'E-mail ou palavra-passe incorrectos',
+    'auth/email-already-in-use':'E-mail já registado','auth/weak-password':'Palavra-passe muito fraca',
+    'auth/too-many-requests':'Muitas tentativas. Tenta mais tarde.','auth/popup-closed-by-user':'Login cancelado.',
+    'auth/network-request-failed':'Sem conexão à internet.'
+  };
+  return m[code] || code;
+}
+</script>
+</body>
+</html>

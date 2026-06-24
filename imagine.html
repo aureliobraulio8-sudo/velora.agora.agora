@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>VELORA - Imagens</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+
+body.light { background: #f5f5f5 !important; color: #111 !important; }
+body.light header { background: #fff !important; border-color: #ddd !important; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Inter', sans-serif; background: #000; color: #fff; min-height: 100dvh; }
+header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #000; border-bottom: 1px solid #0d000d; position: sticky; top: 0; z-index: 10; }
+.glow-btn { border: 1.5px solid #ff00ff; color: #ff00ff; background: transparent; padding: 6px 14px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.tabs { display: flex; border-bottom: 1px solid #0d000d; }
+.tab { flex: 1; padding: 13px; text-align: center; font-size: 14px; font-weight: 600; color: #555; cursor: pointer; border-bottom: 2px solid transparent; transition: all .2s; }
+.tab.active { color: #ff00aa; border-bottom-color: #ff00aa; }
+.panel { display: none; padding: 16px; padding-bottom: 100px; }
+.panel.active { display: block; }
+textarea.prompt { width: 100%; background: #0a000a; border: 1.5px solid #1a001a; border-radius: 14px; padding: 14px 16px; color: #fff; font-size: 14px; outline: none; resize: none; height: 90px; font-family: 'Inter', sans-serif; transition: border-color .2s; }
+textarea.prompt:focus { border-color: #ff00aa; }
+textarea.prompt::placeholder { color: #444; }
+.style-grid { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.style-chip { background: #0a000a; border: 1px solid #1a001a; border-radius: 20px; padding: 7px 14px; font-size: 13px; color: #888; cursor: pointer; transition: all .15s; }
+.style-chip.active { background: rgba(255,0,170,0.1); border-color: #ff00aa; color: #ff00aa; }
+.btn-gen { width: 100%; padding: 15px; background: linear-gradient(135deg, #d414bd, #9b12d4); border: none; border-radius: 14px; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .2s; }
+.btn-gen:disabled { opacity: 0.6; cursor: not-allowed; }
+.img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.img-card { position: relative; border-radius: 14px; overflow: hidden; background: #0a000a; border: 1px solid #1a001a; cursor: pointer; transition: all .2s; aspect-ratio: 9/14; }
+.img-card:hover { border-color: #ff00aa; transform: translateY(-2px); }
+.img-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.img-actions { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); padding: 12px; display: flex; gap: 6px; opacity: 0; transition: opacity .2s; }
+.img-card:hover .img-actions { opacity: 1; }
+.img-btn { flex: 1; padding: 7px; background: rgba(212,20,189,0.8); border: none; border-radius: 8px; color: #fff; font-size: 12px; cursor: pointer; }
+.spinner-wrap { text-align: center; padding: 40px 0; }
+.spinner { width: 32px; height: 32px; border: 3px solid rgba(255,0,170,0.2); border-top-color: #ff00aa; border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.search-bar { display: flex; gap: 10px; }
+.search-bar input { flex: 1; background: #0a000a; border: 1.5px solid #1a001a; border-radius: 12px; padding: 12px 16px; color: #fff; font-size: 14px; outline: none; transition: border-color .2s; }
+.search-bar input:focus { border-color: #ff00aa; }
+.search-bar input::placeholder { color: #444; }
+.search-bar button { background: linear-gradient(135deg,#d414bd,#9b12d4); border: none; border-radius: 12px; padding: 12px 18px; color: #fff; font-size: 16px; cursor: pointer; }
+.empty { text-align: center; padding: 60px 20px; color: #333; }
+.empty i { font-size: 40px; margin-bottom: 12px; }
+/* Bottom input */
+.bottom-bar { position: fixed; bottom: 0; left: 0; right: 0; padding: 10px 14px 20px; background: #000; border-top: 1px solid #0d000d; z-index: 10; }
+.bottom-input { display: flex; align-items: center; background: #000; border: 2px solid #ff00ff; border-radius: 26px; padding: 6px 8px 6px 16px; box-shadow: 0 0 12px rgba(255,0,255,0.15); gap: 8px; }
+.bottom-input input { flex: 1; background: transparent; border: none; color: #fff; font-size: 14px; outline: none; }
+.bottom-input input::placeholder { color: #444; }
+.bottom-input button { width: 36px; height: 36px; background: linear-gradient(135deg,#d414bd,#9b12d4); border: none; border-radius: 50%; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+/* Lightbox */
+.lightbox { position: fixed; inset: 0; background: rgba(0,0,0,0.96); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+.lightbox img { max-width: 100%; max-height: 75vh; border-radius: 16px; object-fit: contain; }
+.lightbox-actions { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; justify-content: center; }
+.lightbox-actions button { padding: 11px 20px; border-radius: 12px; font-size: 14px; cursor: pointer; border: none; }
+</style>
+<script src="velora.js"></script>
+</head>
+<body>
+
+<header>
+  <button onclick="window.location.href='chat.html'" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer;"><i class="fa-solid fa-arrow-left"></i></button>
+  <span style="font-size:17px;font-weight:700;letter-spacing:1px;">GERAR IMAGENS</span>
+  <button class="glow-btn" onclick="window.location.href='plus.html'">Plus</button>
+</header>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('ai',this)">🤖 IA</div>
+  <div class="tab" onclick="switchTab('stock',this)">📷 Stock</div>
+  <div class="tab" onclick="switchTab('gallery',this)">🖼️ Galeria</div>
+</div>
+
+<!-- AI Panel -->
+<div class="panel active" id="panel-ai">
+  <h2 style="font-size:20px;font-weight:700;margin-bottom:4px;">Criar com IA</h2>
+  <p style="color:#555;font-size:13px;margin-bottom:14px;">Descreve qualquer imagem</p>
+
+  <textarea class="prompt" id="ai-prompt" placeholder="Ex: Mansão de luxo com piscina infinita, pôr do sol dourado, carros exóticos, foto cinematográfica..."></textarea>
+
+  <div class="style-grid">
+    <button class="style-chip active" data-style="photorealistic, ultra detailed, 4k, stunning photography" onclick="pickStyle(this)">📷 Realista</button>
+    <button class="style-chip" data-style="luxury aesthetic, cinematic lighting, premium quality" onclick="pickStyle(this)">💎 Luxo</button>
+    <button class="style-chip" data-style="dark moody aesthetic, dramatic shadows, artistic" onclick="pickStyle(this)">🌑 Dark</button>
+    <button class="style-chip" data-style="golden hour, warm tones, beautiful sunset" onclick="pickStyle(this)">☀️ Golden</button>
+    <button class="style-chip" data-style="minimalist, clean background, elegant" onclick="pickStyle(this)">⬜ Minimal</button>
+    <button class="style-chip" data-style="vivid colors, instagram aesthetic, vibrant" onclick="pickStyle(this)">🌈 Vibrante</button>
+  </div>
+
+  <button class="btn-gen" id="btn-ai" onclick="generateImages()">
+    <i class="fa-solid fa-wand-magic-sparkles"></i> GERAR IMAGENS
+  </button>
+  <p style="text-align:center;font-size:12px;color:#333;margin-top:8px;margin-bottom:16px;">4 imagens · Grátis · IA Pollinations</p>
+
+  <div id="ai-loading" style="display:none;" class="spinner-wrap">
+    <div class="spinner"></div>
+    <p style="color:#555;font-size:13px;">A criar as tuas imagens...</p>
+  </div>
+
+  <div id="ai-grid" class="img-grid"></div>
+</div>
+
+<!-- Stock Panel -->
+<div class="panel" id="panel-stock">
+  <h2 style="font-size:20px;font-weight:700;margin-bottom:4px;">Imagens Stock</h2>
+  <p style="color:#555;font-size:13px;margin-bottom:14px;">Pesquisa milhões de fotos grátis</p>
+  <div class="search-bar" style="margin-bottom:16px;">
+    <input id="stock-q" placeholder="Ex: luxury car, sunset beach, city..." onkeydown="if(event.key==='Enter')searchStock()"/>
+    <button onclick="searchStock()"><i class="fa-solid fa-magnifying-glass"></i></button>
+  </div>
+  <div id="stock-loading" style="display:none;" class="spinner-wrap"><div class="spinner"></div></div>
+  <div id="stock-grid" class="img-grid"></div>
+  <div id="stock-empty" class="empty"><i class="fa-regular fa-image"></i><p>Pesquisa para encontrar imagens</p></div>
+</div>
+
+<!-- Gallery Panel -->
+<div class="panel" id="panel-gallery">
+  <h2 style="font-size:20px;font-weight:700;margin-bottom:4px;">Minha Galeria</h2>
+  <p style="color:#555;font-size:13px;margin-bottom:14px;">Imagens guardadas</p>
+  <div id="gallery-grid" class="img-grid"></div>
+  <div id="gallery-empty" class="empty"><i class="fa-regular fa-heart"></i><p style="margin-top:8px;">Sem imagens guardadas ainda</p></div>
+</div>
+
+<!-- Bottom bar -->
+<div class="bottom-bar">
+  <div class="bottom-input">
+    <input id="bottom-q" placeholder="Descreve uma imagem..." onkeydown="if(event.key==='Enter'){document.getElementById('ai-prompt').value=this.value;switchTab('ai',document.querySelector('.tab'));generateImages();}"/>
+    <button onclick="document.getElementById('ai-prompt').value=document.getElementById('bottom-q').value;switchTab('ai',document.querySelector('.tab'));generateImages();">
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
+  </div>
+</div>
+
+<script>
+const PEXELS = "UXim46l3Rq8TKjIWQmrAUWxQe5IeLpepbp1nUlIXHEDD23AJBz7tAPYF";
+let style = "photorealistic, ultra detailed, 4k, stunning photography";
+let gallery = JSON.parse(localStorage.getItem('velora_gallery') || '[]');
+
+function switchTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  if(el) el.classList.add('active');
+  else document.querySelectorAll('.tab')[['ai','stock','gallery'].indexOf(name)].classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+  if(name === 'gallery') renderGallery();
+}
+
+function pickStyle(el) {
+  document.querySelectorAll('.style-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  style = el.dataset.style;
+}
+
+async function generateImages() {
+  const prompt = document.getElementById('ai-prompt').value.trim();
+  if (!prompt) { alert('Descreve a imagem!'); return; }
+
+  document.getElementById('ai-loading').style.display = 'block';
+  document.getElementById('ai-grid').innerHTML = '';
+  document.getElementById('btn-ai').disabled = true;
+
+  const full = encodeURIComponent(`${prompt}, ${style}, high quality`);
+  const seeds = [Date.now(), Date.now()+100, Date.now()+200, Date.now()+300];
+  const urls = seeds.map(s => `https://image.pollinations.ai/prompt/${full}?width=512&height=768&nologo=true&seed=${s}`);
+
+  document.getElementById('ai-loading').style.display = 'none';
+  document.getElementById('btn-ai').disabled = false;
+
+  const grid = document.getElementById('ai-grid');
+  grid.innerHTML = urls.map(url => `
+    <div class="img-card" onclick="openLightbox('${url}','${encodeURIComponent(prompt)}')">
+      <img src="${url}" loading="lazy" onerror="this.parentElement.innerHTML='<div style=&quot;height:100%;display:flex;align-items:center;justify-content:center;font-size:30px;&quot;>🎨</div>'">
+      <div class="img-actions">
+        <button class="img-btn" onclick="event.stopPropagation();saveImg('${url}','${encodeURIComponent(prompt)}')">💾 Guardar</button>
+        <button class="img-btn" style="flex:0;padding:7px 10px;" onclick="event.stopPropagation();copyUrl('${url}')">🔗</button>
+      </div>
+    </div>`).join('');
+}
+
+async function searchStock() {
+  const q = document.getElementById('stock-q').value.trim();
+  if(!q) return;
+  document.getElementById('stock-loading').style.display = 'block';
+  document.getElementById('stock-grid').innerHTML = '';
+  document.getElementById('stock-empty').style.display = 'none';
+  try {
+    const r = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(q)}&per_page=12&orientation=portrait`, { headers: { Authorization: PEXELS } });
+    const d = await r.json();
+    document.getElementById('stock-loading').style.display = 'none';
+    if(!d.photos?.length) { document.getElementById('stock-empty').style.display = 'block'; return; }
+    document.getElementById('stock-grid').innerHTML = d.photos.map(p => `
+      <div class="img-card" onclick="openLightbox('${p.src.large}','${encodeURIComponent(q)}')">
+        <img src="${p.src.medium}" loading="lazy">
+        <div class="img-actions">
+          <button class="img-btn" onclick="event.stopPropagation();saveImg('${p.src.large}','${encodeURIComponent(q)}')">💾 Guardar</button>
+        </div>
+      </div>`).join('');
+  } catch { document.getElementById('stock-loading').style.display = 'none'; document.getElementById('stock-empty').style.display = 'block'; }
+}
+
+function saveImg(url, encPrompt) {
+  gallery.unshift({ url, prompt: decodeURIComponent(encPrompt), date: new Date().toISOString() });
+  if(gallery.length > 40) gallery.pop();
+  localStorage.setItem('velora_gallery', JSON.stringify(gallery));
+  alert('✅ Guardada na galeria!');
+}
+
+function renderGallery() {
+  const grid = document.getElementById('gallery-grid');
+  const empty = document.getElementById('gallery-empty');
+  if(!gallery.length) { empty.style.display = 'block'; grid.innerHTML = ''; return; }
+  empty.style.display = 'none';
+  grid.innerHTML = gallery.map((img, i) => `
+    <div class="img-card" onclick="openLightbox('${img.url}','${encodeURIComponent(img.prompt)}')">
+      <img src="${img.url}" loading="lazy" onerror="this.style.display='none'">
+      <div class="img-actions">
+        <button class="img-btn" onclick="event.stopPropagation();gallery.splice(${i},1);localStorage.setItem('velora_gallery',JSON.stringify(gallery));renderGallery()">🗑️</button>
+        <button class="img-btn" onclick="event.stopPropagation();copyUrl('${img.url}')">🔗</button>
+      </div>
+    </div>`).join('');
+}
+
+function openLightbox(url, encPrompt) {
+  const lb = document.createElement('div');
+  lb.className = 'lightbox';
+  lb.innerHTML = `
+    <img src="${url}" alt="Imagem">
+    <div class="lightbox-actions">
+      <button onclick="saveImg('${url}','${encPrompt}')" style="background:linear-gradient(135deg,#d414bd,#9b12d4);color:#fff;">💾 Guardar</button>
+      <button onclick="copyUrl('${url}');this.textContent='✅ Copiado!'" style="background:#1a001a;border:1px solid #2a002a;color:#fff;">🔗 Copiar Link</button>
+      <button onclick="this.closest('.lightbox').remove()" style="background:#111;color:#888;">✕ Fechar</button>
+    </div>`;
+  lb.addEventListener('click', e => { if(e.target === lb) lb.remove(); });
+  document.body.appendChild(lb);
+}
+
+function copyUrl(url) { navigator.clipboard.writeText(url).catch(()=>{}); }
+</script>
+</body>
+</html>
