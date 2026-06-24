@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>VELORA Plus</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Inter', sans-serif; background: #000; color: #fff; min-height: 100dvh; }
+
+body.light { background: #f5f5f5 !important; color: #111 !important; }
+body.light .feat-card { background: #fff !important; border-color: #ddd !important; }
+body.light .plan { background: #fff !important; border-color: #ddd !important; }
+body.light .guarantee { background: rgba(34,197,94,0.05) !important; }
+
+.neon { position: fixed; bottom: 0; left: 0; right: 0; height: 250px; background: linear-gradient(to top, rgba(212,20,189,0.12), transparent); pointer-events: none; }
+header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #000; border-bottom: 1px solid #0d000d; }
+main { padding: 24px 18px 100px; max-width: 440px; margin: 0 auto; }
+.hero { text-align: center; margin-bottom: 28px; }
+.crown-box { width: 72px; height: 72px; background: rgba(212,20,189,0.08); border: 1px solid rgba(212,20,189,0.3); border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 34px; margin: 0 auto 18px; box-shadow: 0 0 30px rgba(212,20,189,0.15); }
+.hero h1 { font-size: 32px; font-weight: 900; }
+.hero h1 span { color: #d414bd; }
+.hero p { color: #666; font-size: 15px; margin-top: 8px; line-height: 1.5; }
+/* Plans */
+.plans { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+.plan { background: #080008; border: 1.5px solid #1a001a; border-radius: 20px; padding: 20px 16px; cursor: pointer; transition: all .2s; position: relative; }
+.plan:hover { border-color: #d414bd; transform: translateY(-2px); }
+.plan.sel-m { border-color: #d414bd; box-shadow: 0 0 20px rgba(212,20,189,0.2); background: rgba(212,20,189,0.05); }
+.plan.sel-a { border-color: #f59e0b; box-shadow: 0 0 20px rgba(245,158,11,0.2); background: rgba(245,158,11,0.04); }
+.plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg,#d414bd,#9b12d4); border-radius: 12px; padding: 3px 14px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+.plan-name { font-size: 12px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.plan-price { font-size: 32px; font-weight: 900; line-height: 1; }
+.plan-period { font-size: 12px; color: #555; margin-top: 4px; }
+.plan-save { font-size: 12px; font-weight: 700; color: #22c55e; margin-top: 8px; }
+/* CTA */
+.btn-cta { width: 100%; padding: 18px; background: linear-gradient(135deg, #d414bd, #9b12d4); border: none; border-radius: 16px; color: #fff; font-size: 17px; font-weight: 800; font-family: 'Inter', sans-serif; cursor: pointer; transition: all .2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; }
+.btn-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(212,20,189,0.4); }
+.btn-cta:active { transform: scale(0.98); }
+/* Trial note */
+.trial-note { text-align: center; font-size: 13px; color: #555; margin-bottom: 24px; line-height: 1.5; }
+.trial-note a { color: #d414bd; text-decoration: none; }
+/* Features */
+.feat-card { background: #080008; border: 1px solid #1a001a; border-radius: 18px; padding: 20px; }
+.feat-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.feat-div { height: 1px; background: linear-gradient(to right, #d414bd, #1a001a); margin: 10px 0 4px; }
+.feat { display: flex; align-items: center; gap: 14px; padding: 11px 0; border-bottom: 1px solid #0a000a; font-size: 15px; color: #ccc; }
+.feat:last-child { border-bottom: none; }
+.feat-ic { width: 28px; height: 28px; border-radius: 8px; background: #d414bd; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+/* Guarantee */
+.guarantee { display: flex; align-items: center; gap: 12px; background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.2); border-radius: 14px; padding: 14px; margin-top: 20px; }
+.guarantee i { color: #22c55e; font-size: 22px; flex-shrink: 0; }
+/* Toast */
+#toast { position: fixed; top: 70px; left: 50%; transform: translateX(-50%); background: #0a000a; border: 1px solid #d414bd; border-radius: 12px; padding: 10px 20px; font-size: 13px; z-index: 999; opacity: 0; transition: opacity .3s; pointer-events: none; }
+#toast.show { opacity: 1; }
+/* Spinner */
+.spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+/* Loading */
+#ls { position: fixed; inset: 0; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; }
+#ls.h { display: none; }
+</style>
+<script src="velora.js"></script>
+</head>
+<body>
+<div class="neon"></div>
+<div id="ls">
+  <div style="font-size:40px;font-weight:900;font-style:italic;margin-bottom:20px;">VELORA IA</div>
+  <div class="spinner" style="width:28px;height:28px;border-width:3px;border-top-color:#d414bd;border-color:rgba(212,20,189,.2);"></div>
+</div>
+
+<header>
+  <button onclick="window.location.href='chat.html'" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer;"><i class="fa-solid fa-arrow-left"></i></button>
+  <h1 style="font-size:20px;font-weight:900;letter-spacing:3px;">VELORA PLUS</h1>
+  <div style="width:28px;"></div>
+</header>
+
+<main>
+  <!-- Hero -->
+  <div class="hero">
+    <div class="crown-box">👑</div>
+    <h1>VELORA <span>Plus</span></h1>
+    <p>Desbloqueia todo o potencial da tua IA pessoal</p>
+  </div>
+
+  <!-- Plans -->
+  <div class="plans">
+    <div class="plan" id="plan-m" onclick="selectPlan('monthly')">
+      <div class="plan-name">Mensal</div>
+      <div class="plan-price">€9<span style="font-size:18px;">,90</span></div>
+      <div class="plan-period">/mês</div>
+    </div>
+    <div class="plan sel-a" id="plan-a" onclick="selectPlan('annual')">
+      <div class="plan-badge">MAIS POPULAR</div>
+      <div style="font-size:18px;margin-bottom:6px;">👑</div>
+      <div class="plan-name">Anual</div>
+      <div class="plan-price">€5<span style="font-size:18px;">,90</span></div>
+      <div class="plan-period">/mês · faturado anualmente</div>
+      <div class="plan-save">✓ Poupa 40%</div>
+    </div>
+  </div>
+
+  <!-- CTA Button -->
+  <button class="btn-cta" id="btn-sub" onclick="subscribe()">
+    👑 Assinar Plus Agora
+  </button>
+
+  <p class="trial-note">
+    Cancela quando quiseres · Sem compromissos<br>
+    <a href="#">Ver Termos & Condições</a>
+  </p>
+
+  <!-- Features -->
+  <div class="feat-card">
+    <div class="feat-title">O que está incluído:</div>
+    <div class="feat-div"></div>
+    <div class="feat">
+      <div class="feat-ic"><i class="fa-solid fa-infinity" style="color:#fff;font-size:12px;"></i></div>
+      <div>
+        <div style="font-weight:600;">Chat ilimitado</div>
+        <div style="font-size:12px;color:#555;">Sem limites de mensagens</div>
+      </div>
+    </div>
+    <div class="feat">
+      <div class="feat-ic"><i class="fa-regular fa-image" style="color:#fff;font-size:12px;"></i></div>
+      <div>
+        <div style="font-weight:600;">Imagens ilimitadas</div>
+        <div style="font-size:12px;color:#555;">Gera imagens sem restrições</div>
+      </div>
+    </div>
+    <div class="feat">
+      <div class="feat-ic"><i class="fa-solid fa-bolt" style="color:#fff;font-size:12px;"></i></div>
+      <div>
+        <div style="font-weight:600;">Resposta prioritária</div>
+        <div style="font-size:12px;color:#555;">2x mais rápido que o plano grátis</div>
+      </div>
+    </div>
+    <div class="feat">
+      <div class="feat-ic"><i class="fa-solid fa-magnifying-glass" style="color:#fff;font-size:12px;"></i></div>
+      <div>
+        <div style="font-weight:600;">Pesquisa web em tempo real</div>
+        <div style="font-size:12px;color:#555;">Informações sempre actualizadas</div>
+      </div>
+    </div>
+    <div class="feat">
+      <div class="feat-ic"><i class="fa-solid fa-pen-nib" style="color:#fff;font-size:12px;"></i></div>
+      <div>
+        <div style="font-weight:600;">Legendas ilimitadas</div>
+        <div style="font-size:12px;color:#555;">Frases e conteúdo sem limites</div>
+      </div>
+    </div>
+    <div class="feat">
+      <div class="feat-ic"><i class="fa-solid fa-ban" style="color:#fff;font-size:12px;"></i></div>
+      <div>
+        <div style="font-weight:600;">Sem anúncios</div>
+        <div style="font-size:12px;color:#555;">Experiência 100% limpa</div>
+      </div>
+    </div>
+    <div class="feat">
+      <div class="feat-ic"><i class="fa-solid fa-headset" style="color:#fff;font-size:12px;"></i></div>
+      <div>
+        <div style="font-weight:600;">Suporte prioritário</div>
+        <div style="font-size:12px;color:#555;">Resposta em menos de 24h</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guarantee -->
+  <div class="guarantee">
+    <i class="fa-solid fa-shield-halved"></i>
+    <div>
+      <div style="font-weight:700;font-size:14px;margin-bottom:2px;">Garantia de 7 dias</div>
+      <div style="font-size:12px;color:#666;">Se não ficares satisfeito, devolvemos o dinheiro sem questões.</div>
+    </div>
+  </div>
+
+</main>
+
+<div id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const app  = initializeApp({
+  apiKey: "AIzaSyAW2ISQ2TKR2p0-QF_v0aADiD-ttDpGm3c",
+  authDomain: "velora-ia-e2539.firebaseapp.com",
+  projectId: "velora-ia-e2539",
+  storageBucket: "velora-ia-e2539.firebasestorage.app",
+  messagingSenderId: "876348453170",
+  appId: "1:876348453170:web:bcca8ebde23563e26a412b"
+});
+const auth = getAuth(app);
+let user = null;
+let selectedPlan = 'annual';
+
+// ─── STRIPE PAYMENT LINKS ───────────────────────
+// INSTRUÇÃO: Vai a stripe.com → Payment Links → Criar link
+// Cria dois links e cola aqui:
+const STRIPE = {
+  monthly: 'https://buy.stripe.com/4gMfZ9akdbZR8MH2fGfw400',
+  annual:  'https://buy.stripe.com/7sYdR1bohaVN3sn7A0fw401'
+};
+// ─────────────────────────────────────────────────
+
+onAuthStateChanged(auth, u => {
+  if (!u) { window.location.href = 'index.html'; return; }
+  user = u;
+  document.getElementById('ls').classList.add('h');
+
+  // Verificar se já é Plus
+  const plano = localStorage.getItem('vp_' + u.uid);
+  if (plano === 'plus') {
+    document.getElementById('btn-sub').innerHTML = '✅ Já és VELORA Plus!';
+    document.getElementById('btn-sub').style.background = 'linear-gradient(135deg,#16a34a,#15803d)';
+    document.getElementById('btn-sub').onclick = null;
+  }
+});
+
+window.selectPlan = (plan) => {
+  selectedPlan = plan;
+  const m = document.getElementById('plan-m');
+  const a = document.getElementById('plan-a');
+  m.className = 'plan' + (plan === 'monthly' ? ' sel-m' : '');
+  a.className = 'plan' + (plan === 'annual'  ? ' sel-a' : '');
+};
+
+window.subscribe = () => {
+  if (!user) { window.location.href = 'index.html'; return; }
+
+  const link = STRIPE[selectedPlan];
+
+  // Verificar se o link foi configurado
+  if (link.includes('SUBSTITUIR')) {
+    // Mostrar instruções
+    showConfigModal();
+    return;
+  }
+
+  // Adicionar email do utilizador ao link Stripe (pre-fill)
+  const url = `${link}?prefilled_email=${encodeURIComponent(user.email)}`;
+
+  // Redirecionar para Stripe
+  window.location.href = url;
+};
+
+function showConfigModal() {
+  const d = document.createElement('div');
+  d.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;';
+  d.innerHTML = `
+    <div style="background:#080008;border:1px solid #1a001a;border-radius:20px;padding:24px;max-width:380px;width:100%;">
+      <div style="font-size:22px;font-weight:800;margin-bottom:12px;">⚙️ Configurar Pagamento</div>
+      <p style="color:#888;font-size:14px;line-height:1.6;margin-bottom:16px;">
+        Para activar pagamentos reais, segue estes passos:
+      </p>
+      <div style="background:#0a000a;border:1px solid #1a001a;border-radius:12px;padding:14px;margin-bottom:12px;font-size:13px;color:#ccc;line-height:1.8;">
+        1. Vai a <strong style="color:#d414bd;">stripe.com</strong><br>
+        2. Clica em <strong>Payment Links</strong><br>
+        3. Cria link para €9,90/mês (mensal)<br>
+        4. Cria link para €5,90/mês (anual)<br>
+        5. Cola os links no ficheiro <strong>plus.html</strong>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:16px;">
+        <button onclick="window.open('https://dashboard.stripe.com/payment-links')" style="flex:1;padding:13px;background:linear-gradient(135deg,#d414bd,#9b12d4);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Abrir Stripe</button>
+        <button onclick="this.closest('div').parentElement.remove()" style="flex:1;padding:13px;background:transparent;border:1px solid #1a001a;border-radius:12px;color:#888;font-size:14px;cursor:pointer;">Fechar</button>
+      </div>
+    </div>`;
+  document.body.appendChild(d);
+}
+
+function toast(msg, dur=3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+
+// Verificar retorno do Stripe (success)
+const params = new URLSearchParams(window.location.search);
+if (params.get('success') === 'true' && user) {
+  localStorage.setItem('vp_' + user.uid, 'plus');
+  toast('✅ Bem-vindo ao VELORA Plus!');
+  setTimeout(() => window.location.href = 'chat.html', 2000);
+}
+</script>
+</body>
+</html>
